@@ -15,6 +15,7 @@
 		8860194A246D549800054B73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601948246D549800054B73 /* LaunchScreen.storyboard */; };
 		88601952246D575800054B73 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88601951246D575800054B73 /* Roboto-Medium.ttf */; };
 		88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */; };
+		88601957246DFC6200054B73 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601956246DFC6200054B73 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		8860194B246D549800054B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88601951246D575800054B73 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerrViewController.swift; sourceTree = "<group>"; };
+		88601956246DFC6200054B73 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				8860193C246D549000054B73 /* SceneDelegate.swift */,
 				88601940246D549000054B73 /* Main.storyboard */,
 				88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */,
+				88601956246DFC6200054B73 /* Extensions.swift */,
 				88601946246D549800054B73 /* Assets.xcassets */,
 				88601948246D549800054B73 /* LaunchScreen.storyboard */,
 				8860194B246D549800054B73 /* Info.plist */,
@@ -153,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88601957246DFC6200054B73 /* Extensions.swift in Sources */,
 				8860193B246D549000054B73 /* AppDelegate.swift in Sources */,
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
 				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
