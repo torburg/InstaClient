@@ -9,23 +9,25 @@
 /* Begin PBXBuildFile section */
 		8860193B246D549000054B73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193A246D549000054B73 /* AppDelegate.swift */; };
 		8860193D246D549000054B73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193C246D549000054B73 /* SceneDelegate.swift */; };
-		8860193F246D549000054B73 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193E246D549000054B73 /* ViewController.swift */; };
 		88601942246D549000054B73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601940246D549000054B73 /* Main.storyboard */; };
 		88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 88601943246D549000054B73 /* InstaClient.xcdatamodeld */; };
 		88601947246D549800054B73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88601946246D549800054B73 /* Assets.xcassets */; };
 		8860194A246D549800054B73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601948246D549800054B73 /* LaunchScreen.storyboard */; };
+		88601952246D575800054B73 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88601951246D575800054B73 /* Roboto-Medium.ttf */; };
+		88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		88601937246D549000054B73 /* InstaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8860193A246D549000054B73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8860193C246D549000054B73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8860193E246D549000054B73 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		88601941246D549000054B73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		88601944246D549000054B73 /* InstaClient.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = InstaClient.xcdatamodel; sourceTree = "<group>"; };
 		88601946246D549800054B73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88601949246D549800054B73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8860194B246D549800054B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88601951246D575800054B73 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerrViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,15 +61,24 @@
 			isa = PBXGroup;
 			children = (
 				8860193A246D549000054B73 /* AppDelegate.swift */,
+				88601953246D575F00054B73 /* Fonts */,
 				8860193C246D549000054B73 /* SceneDelegate.swift */,
-				8860193E246D549000054B73 /* ViewController.swift */,
 				88601940246D549000054B73 /* Main.storyboard */,
+				88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */,
 				88601946246D549800054B73 /* Assets.xcassets */,
 				88601948246D549800054B73 /* LaunchScreen.storyboard */,
 				8860194B246D549800054B73 /* Info.plist */,
 				88601943246D549000054B73 /* InstaClient.xcdatamodeld */,
 			);
 			path = InstaClient;
+			sourceTree = "<group>";
+		};
+		88601953246D575F00054B73 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				88601951246D575800054B73 /* Roboto-Medium.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +139,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88601952246D575800054B73 /* Roboto-Medium.ttf in Resources */,
 				8860194A246D549800054B73 /* LaunchScreen.storyboard in Resources */,
 				88601947246D549800054B73 /* Assets.xcassets in Resources */,
 				88601942246D549000054B73 /* Main.storyboard in Resources */,
@@ -141,9 +153,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8860193F246D549000054B73 /* ViewController.swift in Sources */,
 				8860193B246D549000054B73 /* AppDelegate.swift in Sources */,
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
+				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
 				8860193D246D549000054B73 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
