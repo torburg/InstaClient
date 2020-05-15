@@ -11,8 +11,8 @@ import Foundation
 struct Post {
     let author: User
     let photo: String
-    let description: String
+    let description: String?
     let date: Date
-    let likes: Int
-    let comments: [Comment]
+    let likes: Int?
+    let comments: [Comment]?
 }

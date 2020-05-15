@@ -10,6 +10,7 @@ import UIKit
 
 class ProfileViewControllerrViewController: UIViewController {
 
+    @IBOutlet weak var name: UILabel!
     @IBOutlet weak var numberOfPosts: UILabel!
     @IBOutlet weak var numberOfFollowers: UILabel!
     @IBOutlet weak var numberOfFollowing: UILabel!
@@ -21,19 +22,17 @@ class ProfileViewControllerrViewController: UIViewController {
     private let minimumSpacing: CGFloat = 3.0
     private let imagesCount = 6
     private let maxItemsInLine = 3
+    private let dataManager = DataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setup()
+        setupView()
+        getData()
     }
 
-    func setup() {
+    func setupView() {
         avatar.layer.cornerRadius = avatar.frame.width / 2
-        
-        numberOfPosts.text = "0"
-        numberOfFollowers.text = "0"
-        numberOfFollowing.text = "0"
         
         editButton.layer.cornerRadius = 5
         editButton.layer.borderWidth = 1
@@ -41,27 +40,50 @@ class ProfileViewControllerrViewController: UIViewController {
         
         gallery.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "reuseID")
     }
+    
+    func getData() {
+        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
+        dataManager.fetch(by: name) { user in
+            
+            self.name.text = user.name
+            let postCount = user.posts?.count ?? 0
+            self.numberOfPosts.text = String(postCount)
+            let followers = user.followers ?? 0
+            self.numberOfFollowers.text = String(followers)
+            let following = user.following ?? 0
+            self.numberOfFollowing.text = String(following)
+
+            guard let avatarURL = user.avatar, let avatarImage = UIImage(named: avatarURL) else { return }
+            self.avatar.image = resized(avatarImage, to: self.avatar.frame.size)
+        }
+    }
 }
+
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
 extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imagesCount
+        return dataManager.postCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuseID", for: indexPath)
         
-        guard let image = UIImage(named: "color_study") else { return cell }
-        let resizedImage = resized(image, to: cell.bounds.size)
-        let imageView = UIImageView(image: resizedImage)
-        imageView.contentMode = .scaleAspectFit
+        dataManager.getPost(for: indexPath.row) { (post) in
+            guard let image = UIImage(named: post.photo) else { return }
+            let resizedImage = resized(image, to: cell.bounds.size)
+            let imageView = UIImageView(image: resizedImage)
+            imageView.contentMode = .scaleAspectFit
 
-        cell.contentView.addSubview(imageView)
-        cell.contentMode = .scaleAspectFit
+            cell.contentView.addSubview(imageView)
+            cell.contentMode = .scaleAspectFit
+        }
 
         return cell
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension ProfileViewControllerrViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

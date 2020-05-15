@@ -21,6 +21,7 @@
 		8860195F246EA87D00054B73 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860195E246EA87D00054B73 /* Comment.swift */; };
 		88601961246EB46F00054B73 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601960246EB46F00054B73 /* AuthViewController.swift */; };
 		88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601963246EFF2A00054B73 /* FieldValidator.swift */; };
+		88601968246F3BE500054B73 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601967246F3BE500054B73 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		8860195E246EA87D00054B73 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		88601960246EB46F00054B73 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		88601963246EFF2A00054B73 /* FieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldValidator.swift; sourceTree = "<group>"; };
+		88601967246F3BE500054B73 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				8860193A246D549000054B73 /* AppDelegate.swift */,
 				88601958246EA6CF00054B73 /* Helpers */,
 				8860193C246D549000054B73 /* SceneDelegate.swift */,
+				88601967246F3BE500054B73 /* DataManager.swift */,
 				88601940246D549000054B73 /* Main.storyboard */,
 				88601965246EFF3800054B73 /* Auth */,
 				88601962246EB48800054B73 /* Controllers */,
@@ -211,6 +214,7 @@
 				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
 				8860195D246EA78600054B73 /* Post.swift in Sources */,
 				88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */,
+				88601968246F3BE500054B73 /* DataManager.swift in Sources */,
 				88601961246EB46F00054B73 /* AuthViewController.swift in Sources */,
 				8860193D246D549000054B73 /* SceneDelegate.swift in Sources */,
 			);

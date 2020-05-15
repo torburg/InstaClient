@@ -9,11 +9,11 @@
 import Foundation
 
 struct User {
-    let avatar: String
+    let avatar: String?
     let name: String
     let email: String
     let password: String
-    let followers: Int
-    let following: Int
-    let posts: [Post]
+    let followers: Int?
+    let following: Int?
+    let posts: [Post]?
 }

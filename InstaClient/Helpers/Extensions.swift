@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 // MARK: - Images are too large to display correctly w/o resizing
+// FIXME: - Fix proportional resizing
 func resized(_ image: UIImage, to size: CGSize) -> UIImage {
     let renderer = UIGraphicsImageRenderer(size: size)
     let resizedImage = renderer.image { (context) in

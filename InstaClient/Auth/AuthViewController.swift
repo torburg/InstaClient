@@ -22,6 +22,8 @@ class AuthViewController: UIViewController {
         }
         let validator = FieldValidator()
         if validator.validate(email, password) {
+            UserDefaults.standard.set(email.text, forKey: "UserName")
+            UserDefaults.standard.set(password.text, forKey: "UserPassword")
             performSegue(withIdentifier: "authSuccess", sender: self)
         }
     }
@@ -98,6 +100,7 @@ class AuthViewController: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension AuthViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
