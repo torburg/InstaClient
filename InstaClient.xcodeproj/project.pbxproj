@@ -16,6 +16,9 @@
 		88601952246D575800054B73 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88601951246D575800054B73 /* Roboto-Medium.ttf */; };
 		88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */; };
 		88601957246DFC6200054B73 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601956246DFC6200054B73 /* Extensions.swift */; };
+		8860195B246EA6F200054B73 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860195A246EA6F200054B73 /* User.swift */; };
+		8860195D246EA78600054B73 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860195C246EA78600054B73 /* Post.swift */; };
+		8860195F246EA87D00054B73 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860195E246EA87D00054B73 /* Comment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		88601951246D575800054B73 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerrViewController.swift; sourceTree = "<group>"; };
 		88601956246DFC6200054B73 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		8860195A246EA6F200054B73 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8860195C246EA78600054B73 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		8860195E246EA87D00054B73 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,11 +69,11 @@
 			isa = PBXGroup;
 			children = (
 				8860193A246D549000054B73 /* AppDelegate.swift */,
-				88601953246D575F00054B73 /* Fonts */,
+				88601958246EA6CF00054B73 /* Helpers */,
 				8860193C246D549000054B73 /* SceneDelegate.swift */,
 				88601940246D549000054B73 /* Main.storyboard */,
 				88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */,
-				88601956246DFC6200054B73 /* Extensions.swift */,
+				88601959246EA6E500054B73 /* Model */,
 				88601946246D549800054B73 /* Assets.xcassets */,
 				88601948246D549800054B73 /* LaunchScreen.storyboard */,
 				8860194B246D549800054B73 /* Info.plist */,
@@ -82,6 +88,25 @@
 				88601951246D575800054B73 /* Roboto-Medium.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		88601958246EA6CF00054B73 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				88601953246D575F00054B73 /* Fonts */,
+				88601956246DFC6200054B73 /* Extensions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		88601959246EA6E500054B73 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8860195A246EA6F200054B73 /* User.swift */,
+				8860195C246EA78600054B73 /* Post.swift */,
+				8860195E246EA87D00054B73 /* Comment.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,8 +183,11 @@
 			files = (
 				88601957246DFC6200054B73 /* Extensions.swift in Sources */,
 				8860193B246D549000054B73 /* AppDelegate.swift in Sources */,
+				8860195B246EA6F200054B73 /* User.swift in Sources */,
+				8860195F246EA87D00054B73 /* Comment.swift in Sources */,
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
 				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
+				8860195D246EA78600054B73 /* Post.swift in Sources */,
 				8860193D246D549000054B73 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
