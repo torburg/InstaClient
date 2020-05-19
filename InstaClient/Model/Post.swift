@@ -15,4 +15,22 @@ struct Post {
     let date: Date
     let likes: Int?
     let comments: [Comment]?
+    
+    init() {
+        author = User()
+        photo = ""
+        description = ""
+        date = Date()
+        likes = 0
+        comments =  []
+    }
+    
+    init(author: User, photo: String, description: String?, date: Date, likes: Int?, comments: [Comment]?) {
+        self.author = author
+        self.photo = photo
+        self.description = description
+        self.date = date
+        self.likes = likes
+        self.comments = comments
+    }
 }

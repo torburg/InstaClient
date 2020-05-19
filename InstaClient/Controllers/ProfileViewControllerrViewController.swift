@@ -42,7 +42,8 @@ class ProfileViewControllerrViewController: UIViewController {
     }
     
     func getData() {
-        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
+//        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
+        let name = "sofya"
         dataManager.fetch(by: name) { user in
             
             self.name.text = user.name
@@ -54,7 +55,8 @@ class ProfileViewControllerrViewController: UIViewController {
             self.numberOfFollowing.text = String(following)
 
             guard let avatarURL = user.avatar, let avatarImage = UIImage(named: avatarURL) else { return }
-            self.avatar.image = resized(avatarImage, to: self.avatar.frame.size)
+            self.avatar.image = avatarImage
+            self.avatar.contentMode = .scaleAspectFill
         }
     }
 }
@@ -71,15 +73,37 @@ extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICo
         
         dataManager.getPost(for: indexPath.row) { (post) in
             guard let image = UIImage(named: post.photo) else { return }
+            
+            // FIXME: - Fix filling cell with image with proportional scaling
             let resizedImage = resized(image, to: cell.bounds.size)
             let imageView = UIImageView(image: resizedImage)
-            imageView.contentMode = .scaleAspectFit
+            imageView.contentMode = .scaleToFill
 
             cell.contentView.addSubview(imageView)
             cell.contentMode = .scaleAspectFit
         }
 
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "toPostSegue", sender: indexPath)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is PostViewController {
+            guard let row = (sender as? IndexPath)?.row else {
+                print("Can't get row from \(String(describing: sender)) in \(#function)")
+                return
+            }
+            dataManager.getPost(for: row) { (fetchedPost) in
+                guard let vc = segue.destination as? PostViewController else {
+                    print("Can't get destination VC in \(#function)")
+                    return
+                }
+                vc.post = fetchedPost
+            }
+        }
     }
 }
 

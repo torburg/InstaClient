@@ -35,7 +35,7 @@ class DataManager {
 extension DataManager {
     
     
-    func generateData() -> [User] {
+    private func generateData() -> [User] {
         let mf = User(avatar: "a_mf", name: "torburg_max", email: "torburg@yandex.ru", password: "max123", followers: 0, following: 5, posts: nil)
         let mfComments: [Comment] = [
             Comment(author: mf, text: "AWESOME", date: Date(), likes: 0),
@@ -46,6 +46,8 @@ extension DataManager {
             Post(author: mf, photo: "color_study", description: "Kandinskiy", date: Date(), likes: 5, comments: mfComments.sorted(by: {$0.text < $1.text})),
             Post(author: mf, photo: "starry_night", description: "Van Gog", date: Date(), likes: 2, comments: mfComments.sorted(by: {$0.text > $1.text})),
             Post(author: mf, photo: "tomato_soup", description: "TOMAAATOOO", date: Date(), likes: 10, comments: mfComments.sorted(by: {$0.likes > $1.likes})),
+            Post(author: mf, photo: "dali", description: "licking time", date: Date(), likes: 100000, comments: mfComments.sorted(by: {$0.likes > $1.likes})),
+            Post(author: mf, photo: "picasso", description: "pcs", date: Date(), likes: 0, comments: mfComments.sorted(by: {$0.likes < $1.likes})),
         ]
         let torburg = User(avatar: mf.avatar, name: mf.name, email: mf.email, password: mf.password, followers: mf.followers, following: mf.following, posts: mfPosts)
         

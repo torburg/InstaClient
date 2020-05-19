@@ -13,4 +13,18 @@ struct Comment {
     let text: String
     let date: Date
     let likes: Int
+    
+    init() {
+        author = User()
+        text = ""
+        date = Date()
+        likes = 0
+    }
+    
+    init(author: User, text: String, date: Date, likes: Int) {
+        self.author = author
+        self.text = text
+        self.date = date
+        self.likes = likes
+    }
 }

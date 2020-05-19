@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 
-// MARK: - Images are too large to display correctly w/o resizing
-// FIXME: - Fix proportional resizing
+// MARK: - Images are too large to display correctly w/o
 func resized(_ image: UIImage, to size: CGSize) -> UIImage {
-    let renderer = UIGraphicsImageRenderer(size: size)
-    let resizedImage = renderer.image { (context) in
-        image.draw(in: CGRect(origin: .zero, size: size))
+    let maxSize = image.size.width > image.size.height ? image.size.width : image.size.height
+    let scale = size.width / maxSize
+    let newHeight = image.size.height * scale
+    
+    let reneder = UIGraphicsImageRenderer(size: CGSize(width: size.width, height: newHeight))
+    let resizedImage = reneder.image { (context) in
+        image.draw(in: CGRect(origin: .zero, size: CGSize(width: size.width, height: newHeight)))
     }
     return resizedImage
 }
