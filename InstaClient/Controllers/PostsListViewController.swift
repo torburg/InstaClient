@@ -11,13 +11,13 @@ import UIKit
 class PostsListViewController: UIViewController {
 
     @IBOutlet weak var postsList: UITableView!
-    let dataManager = DataManager()
+    let dataManager = DataManager.shared
     var user: User? = nil
     var currentPost: Post? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataManager.fetch(by: "sofya") { user in
+        dataManager.asyncGetUser(by: "sofya") { user in
             self.user = user
         }
         

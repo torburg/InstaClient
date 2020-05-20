@@ -21,7 +21,7 @@ class ProfileViewControllerrViewController: UIViewController {
     private let minimumSpacing: CGFloat = 3.0
     private let imagesCount = 6
     private let maxItemsInLine = 3
-    private let dataManager = DataManager()
+    private let dataManager = DataManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +54,7 @@ class ProfileViewControllerrViewController: UIViewController {
     func getData() {
 //        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
         let name = "sofya"
-        dataManager.fetch(by: name) { user in
+        dataManager.asyncGetUser(by: name) { user in
             
             navigationItem.title = user.name
             let postCount = user.posts?.count ?? 0
@@ -81,7 +81,7 @@ extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuseID", for: indexPath)
         
-        dataManager.getPost(for: indexPath.row) { (post) in
+        dataManager.asyncGetPost(for: indexPath.row) { (post) in
             guard let image = UIImage(named: post.photo) else { return }
             
             // FIXME: - Fix filling cell with image with proportional scaling

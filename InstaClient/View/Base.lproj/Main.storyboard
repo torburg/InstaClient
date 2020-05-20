@@ -213,7 +213,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="LoC-Tt-P8L">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="reuseID" id="LoC-Tt-P8L">
                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Kfw-D1-Rbz">
@@ -279,7 +279,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FDf-79-k7y">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FDf-79-k7y">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
@@ -331,6 +331,9 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="41" height="24"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="5"/>
                                                             <state key="normal" title="Button" image="like"/>
+                                                            <connections>
+                                                                <action selector="likePressed:" destination="DyZ-ll-QaT" eventType="touchUpInside" id="kx3-sq-gVs"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MKh-sc-4sL">
                                                             <rect key="frame" x="41" y="0.0" width="41" height="24"/>
@@ -349,36 +352,50 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="5"/>
                                                     <state key="normal" title="Button" image="favourites"/>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NwU-AC-r4j" userLabel="Post Content">
-                                                    <rect key="frame" x="12" y="524" width="390" height="17.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-36-Wq1" userLabel="Likes">
+                                                    <rect key="frame" x="12" y="519" width="123" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ksE-2h-tcC">
+                                                    <rect key="frame" x="12" y="549.5" width="390" height="183.5"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="NwU-AC-r4j" firstAttribute="leading" secondItem="6qk-Cv-hRF" secondAttribute="leading" id="0cj-Ku-m8b"/>
+                                                <constraint firstItem="ksE-2h-tcC" firstAttribute="trailing" secondItem="ph1-x0-JQp" secondAttribute="trailing" id="3tm-sF-fYp"/>
                                                 <constraint firstItem="HPa-fL-3si" firstAttribute="leading" secondItem="woh-n1-9tE" secondAttribute="leading" id="53K-Hb-R0r"/>
                                                 <constraint firstAttribute="trailing" secondItem="HPa-fL-3si" secondAttribute="trailing" id="5ZG-oU-GTM"/>
                                                 <constraint firstItem="NWa-hl-lfL" firstAttribute="leading" secondItem="woh-n1-9tE" secondAttribute="leading" constant="12" id="83U-Db-KcQ"/>
                                                 <constraint firstItem="1YI-BF-cLJ" firstAttribute="leading" secondItem="NWa-hl-lfL" secondAttribute="trailing" constant="10" id="9G5-yk-fug"/>
+                                                <constraint firstItem="vSF-36-Wq1" firstAttribute="leading" secondItem="6qk-Cv-hRF" secondAttribute="leading" id="GbX-z2-zfm"/>
+                                                <constraint firstItem="ksE-2h-tcC" firstAttribute="top" secondItem="vSF-36-Wq1" secondAttribute="bottom" constant="10" id="I1q-R8-kce"/>
                                                 <constraint firstItem="1YI-BF-cLJ" firstAttribute="top" secondItem="NWa-hl-lfL" secondAttribute="top" id="Jwi-U5-tBT"/>
                                                 <constraint firstItem="HPa-fL-3si" firstAttribute="top" secondItem="NWa-hl-lfL" secondAttribute="bottom" constant="10" id="Osf-XB-vs8"/>
                                                 <constraint firstItem="ph1-x0-JQp" firstAttribute="top" secondItem="6qk-Cv-hRF" secondAttribute="top" id="PeA-n7-pHa"/>
+                                                <constraint firstItem="ksE-2h-tcC" firstAttribute="leading" secondItem="vSF-36-Wq1" secondAttribute="leading" id="PfB-Un-7Pt"/>
                                                 <constraint firstAttribute="trailing" secondItem="ph1-x0-JQp" secondAttribute="trailing" constant="12" id="RDD-K0-lBo"/>
                                                 <constraint firstItem="6qk-Cv-hRF" firstAttribute="leading" secondItem="woh-n1-9tE" secondAttribute="leading" constant="12" id="XZu-T9-cc3"/>
-                                                <constraint firstItem="NwU-AC-r4j" firstAttribute="trailing" secondItem="ph1-x0-JQp" secondAttribute="trailing" id="aeG-Sh-S98"/>
+                                                <constraint firstItem="vSF-36-Wq1" firstAttribute="trailing" secondItem="6qk-Cv-hRF" secondAttribute="trailing" id="cZe-22-FZ4"/>
                                                 <constraint firstItem="NWa-hl-lfL" firstAttribute="top" secondItem="woh-n1-9tE" secondAttribute="top" constant="12" id="ci6-rP-sU9"/>
                                                 <constraint firstItem="xMd-Pi-Mqb" firstAttribute="top" secondItem="woh-n1-9tE" secondAttribute="top" constant="12" id="d9S-Hd-Ghk"/>
                                                 <constraint firstItem="6qk-Cv-hRF" firstAttribute="top" secondItem="HPa-fL-3si" secondAttribute="bottom" constant="10" id="eR8-J7-bbb"/>
+                                                <constraint firstItem="vSF-36-Wq1" firstAttribute="top" secondItem="6qk-Cv-hRF" secondAttribute="bottom" constant="15" id="iXf-ag-3Yl"/>
                                                 <constraint firstItem="ph1-x0-JQp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6qk-Cv-hRF" secondAttribute="trailing" constant="8" symbolic="YES" id="mZL-De-1Z6"/>
-                                                <constraint firstItem="NwU-AC-r4j" firstAttribute="top" secondItem="6qk-Cv-hRF" secondAttribute="bottom" constant="20" id="sVC-DF-7Xf"/>
                                                 <constraint firstItem="1YI-BF-cLJ" firstAttribute="bottom" secondItem="NWa-hl-lfL" secondAttribute="bottom" id="uSP-pD-lV1"/>
                                                 <constraint firstAttribute="trailing" secondItem="xMd-Pi-Mqb" secondAttribute="trailing" constant="12" id="xsS-Z0-F4n"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="content" destination="NwU-AC-r4j" id="Aes-r4-fqm"/>
+                                            <outlet property="content" destination="ksE-2h-tcC" id="Ldf-zM-dHP"/>
                                             <outlet property="geo" destination="7Bx-Ct-SbJ" id="4aB-GB-vdx"/>
+                                            <outlet property="likeButton" destination="n0T-rg-P1D" id="nKn-kX-Zkt"/>
+                                            <outlet property="likes" destination="vSF-36-Wq1" id="wNu-Xp-NJE"/>
                                             <outlet property="mainAvatar" destination="NWa-hl-lfL" id="9eO-dv-9Dz"/>
                                             <outlet property="mainPhoto" destination="HPa-fL-3si" id="Fm5-He-wHy"/>
                                             <outlet property="ownerName" destination="4sf-Z8-zUt" id="OdF-Ny-xy2"/>

@@ -9,6 +9,7 @@
 import Foundation
 
 struct Post {
+    let id: UUID
     let author: User
     let photo: String
     let description: String?
@@ -17,6 +18,7 @@ struct Post {
     let comments: [Comment]?
     
     init() {
+        id = UUID()
         author = User()
         photo = ""
         description = ""
@@ -25,7 +27,8 @@ struct Post {
         comments =  []
     }
     
-    init(author: User, photo: String, description: String?, date: Date, likes: Int?, comments: [Comment]?) {
+    init(id: UUID, author: User, photo: String, description: String?, date: Date, likes: Int?, comments: [Comment]?) {
+        self.id = id
         self.author = author
         self.photo = photo
         self.description = description
@@ -35,6 +38,11 @@ struct Post {
     }
     
     static func == (lhs: Post, rhs: Post) -> Bool {
-        return lhs.description == rhs.description
+        return lhs.id == rhs.id
     }
+    
+    static func != (lhs: Post, rhs: Post) -> Bool {
+        return !(lhs == rhs)
+    }
+    
 }
