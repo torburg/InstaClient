@@ -33,4 +33,8 @@ struct Post {
         self.likes = likes
         self.comments = comments
     }
+    
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.description == rhs.description
+    }
 }

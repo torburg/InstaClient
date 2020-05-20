@@ -10,7 +10,6 @@ import UIKit
 
 class ProfileViewControllerrViewController: UIViewController {
 
-    @IBOutlet weak var name: UILabel!
     @IBOutlet weak var numberOfPosts: UILabel!
     @IBOutlet weak var numberOfFollowers: UILabel!
     @IBOutlet weak var numberOfFollowing: UILabel!
@@ -39,6 +38,17 @@ class ProfileViewControllerrViewController: UIViewController {
         editButton.layer.borderColor = UIColor(red: 0.859, green: 0.859, blue: 0.859, alpha: 1).cgColor
         
         gallery.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "reuseID")
+        
+        navigationController?.navigationBar.backgroundColor = view.backgroundColor
+        
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
+        navigationController?.navigationBar.backIndicatorImage?.withTintColor(.black)
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage?.withTintColor(.black)
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
     }
     
     func getData() {
@@ -46,7 +56,7 @@ class ProfileViewControllerrViewController: UIViewController {
         let name = "sofya"
         dataManager.fetch(by: name) { user in
             
-            self.name.text = user.name
+            navigationItem.title = user.name
             let postCount = user.posts?.count ?? 0
             self.numberOfPosts.text = String(postCount)
             let followers = user.followers ?? 0
@@ -87,23 +97,12 @@ extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "toPostSegue", sender: indexPath)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.destination is PostViewController {
-            guard let row = (sender as? IndexPath)?.row else {
-                print("Can't get row from \(String(describing: sender)) in \(#function)")
-                return
-            }
-            dataManager.getPost(for: row) { (fetchedPost) in
-                guard let vc = segue.destination as? PostViewController else {
-                    print("Can't get destination VC in \(#function)")
-                    return
-                }
-                vc.post = fetchedPost
-            }
-        }
+        guard let postsListVC = storyboard?.instantiateViewController(identifier: "postListView") else { return }
+        guard let vc = postsListVC as? PostsListViewController else { return }
+        vc.currentPost = dataManager.syncGetPost(for: indexPath.row)
+        navigationController?.pushViewController(vc, animated: false)
+        // FIXME: - Do I need this?..
+//            self.performSegue(withIdentifier: "showPost", sender: nil)
     }
 }
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8816461B24740A0C0021508D /* PostsListViewController.swift */; };
+		8816462124740D0A0021508D /* PostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8816462024740D0A0021508D /* PostViewCell.swift */; };
 		8860193B246D549000054B73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193A246D549000054B73 /* AppDelegate.swift */; };
 		8860193D246D549000054B73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193C246D549000054B73 /* SceneDelegate.swift */; };
 		88601942246D549000054B73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601940246D549000054B73 /* Main.storyboard */; };
@@ -22,10 +24,11 @@
 		88601961246EB46F00054B73 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601960246EB46F00054B73 /* AuthViewController.swift */; };
 		88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601963246EFF2A00054B73 /* FieldValidator.swift */; };
 		88601968246F3BE500054B73 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601967246F3BE500054B73 /* DataManager.swift */; };
-		8860196A2470111B00054B73 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886019692470111B00054B73 /* PostViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8816461B24740A0C0021508D /* PostsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsListViewController.swift; sourceTree = "<group>"; };
+		8816462024740D0A0021508D /* PostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewCell.swift; sourceTree = "<group>"; };
 		88601937246D549000054B73 /* InstaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8860193A246D549000054B73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8860193C246D549000054B73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +46,6 @@
 		88601960246EB46F00054B73 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		88601963246EFF2A00054B73 /* FieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldValidator.swift; sourceTree = "<group>"; };
 		88601967246F3BE500054B73 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		886019692470111B00054B73 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8816461F24740BBD0021508D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				88601940246D549000054B73 /* Main.storyboard */,
+				8816462024740D0A0021508D /* PostViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		8860192E246D549000054B73 = {
 			isa = PBXGroup;
 			children = (
@@ -80,7 +91,7 @@
 				88601958246EA6CF00054B73 /* Helpers */,
 				8860193C246D549000054B73 /* SceneDelegate.swift */,
 				88601967246F3BE500054B73 /* DataManager.swift */,
-				88601940246D549000054B73 /* Main.storyboard */,
+				8816461F24740BBD0021508D /* View */,
 				88601965246EFF3800054B73 /* Auth */,
 				88601962246EB48800054B73 /* Controllers */,
 				88601959246EA6E500054B73 /* Model */,
@@ -122,8 +133,8 @@
 		88601962246EB48800054B73 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8816461B24740A0C0021508D /* PostsListViewController.swift */,
 				88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */,
-				886019692470111B00054B73 /* PostViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -209,7 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8860196A2470111B00054B73 /* PostViewController.swift in Sources */,
+				8816462124740D0A0021508D /* PostViewCell.swift in Sources */,
 				88601957246DFC6200054B73 /* Extensions.swift in Sources */,
 				8860193B246D549000054B73 /* AppDelegate.swift in Sources */,
 				8860195B246EA6F200054B73 /* User.swift in Sources */,
@@ -218,6 +229,7 @@
 				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
 				8860195D246EA78600054B73 /* Post.swift in Sources */,
 				88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */,
+				8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */,
 				88601968246F3BE500054B73 /* DataManager.swift in Sources */,
 				88601961246EB46F00054B73 /* AuthViewController.swift in Sources */,
 				8860193D246D549000054B73 /* SceneDelegate.swift in Sources */,

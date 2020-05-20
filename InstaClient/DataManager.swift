@@ -23,11 +23,22 @@ class DataManager {
     func postCount() -> Int {
         return currentUser?.posts?.count ?? 0
     }
+    
+    func getIndex(for post: Post) -> Int? {
+        guard let posts = currentUser?.posts else { return nil }
+        return posts.firstIndex(where: { $0 == post })
+    }
  
     func getPost(for index: Int, completion: (Post)->Void) {
         guard let posts = currentUser?.posts else { return }
         let post = posts[index]
         completion(post)
+    }
+    
+    func syncGetPost(for index: Int) -> Post? {
+        guard let posts = currentUser?.posts else { return nil }
+        let post = posts[index]
+        return post
     }
 }
 
