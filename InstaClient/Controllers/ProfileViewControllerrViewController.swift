@@ -21,7 +21,7 @@ class ProfileViewControllerrViewController: UIViewController {
     private let minimumSpacing: CGFloat = 3.0
     private let imagesCount = 6
     private let maxItemsInLine = 3
-    private let dataManager = DataManager.shared
+    lazy private var dataManager = DataManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,16 +81,27 @@ extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuseID", for: indexPath)
         
+        let indicator = UIActivityIndicatorView(style: .medium)
+        cell.contentView.addSubview(indicator)
+        indicator.center = cell.contentView.center
+        indicator.startAnimating()
         dataManager.asyncGetPost(for: indexPath.row) { (post) in
             guard let image = UIImage(named: post.photo) else { return }
             
             // FIXME: - Fix filling cell with image with proportional scaling
-            let resizedImage = resized(image, to: cell.bounds.size)
-            let imageView = UIImageView(image: resizedImage)
-            imageView.contentMode = .scaleToFill
+            let cellSize = cell.bounds.size
+            DispatchQueue.global(qos: .utility).async {
+                let resizedImage = resized(image, to: cellSize)
+                DispatchQueue.main.async {
+                    indicator.stopAnimating()
+                    indicator.removeFromSuperview()
+                    let imageView = UIImageView(image: resizedImage)
+                    imageView.contentMode = .scaleToFill
 
-            cell.contentView.addSubview(imageView)
-            cell.contentMode = .scaleAspectFit
+                    cell.contentView.addSubview(imageView)
+                    cell.contentMode = .scaleAspectFit
+                }
+            }
         }
 
         return cell

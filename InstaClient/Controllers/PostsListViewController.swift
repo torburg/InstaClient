@@ -11,7 +11,7 @@ import UIKit
 class PostsListViewController: UIViewController {
 
     @IBOutlet weak var postsList: UITableView!
-    let dataManager = DataManager.shared
+    lazy var dataManager = DataManager.shared
     var user: User? = nil
     var currentPost: Post? = nil
     
@@ -24,7 +24,7 @@ class PostsListViewController: UIViewController {
         setNavigationView()
         
         guard let post = currentPost else { return }
-        guard let index = dataManager.getIndex(for: post) else { return }
+        guard let index = dataManager.getIndex(of: post) else { return }
         // MARK: - It doesn't work w/o asyncAfter. Miliseconds aren't nessesary.
         // FIXME: - Should open current post w/o downloading every post in table
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
@@ -57,8 +57,7 @@ extension PostsListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let dequedCell = postsList.dequeueReusableCell(withIdentifier: PostViewCell.reuseID, for: indexPath)
         guard let cell = dequedCell as? PostViewCell else { return dequedCell }
-        guard let post = dataManager.syncGetPost(for: indexPath.row) else { return cell }
-        cell.fillData(with: post)
+        cell.onBind(for: indexPath.row)
         return cell
     }
     

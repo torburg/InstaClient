@@ -148,8 +148,8 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="euQ-Dm-aev">
-                                                <rect key="frame" x="19.5" y="50" width="54" height="14.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="euQ-Dm-aev">
+                                                <rect key="frame" x="19.5" y="50" width="53.5" height="14.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -392,13 +392,13 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="authorName" destination="4sf-Z8-zUt" id="OdF-Ny-xy2"/>
                                             <outlet property="content" destination="ksE-2h-tcC" id="Ldf-zM-dHP"/>
                                             <outlet property="geo" destination="7Bx-Ct-SbJ" id="4aB-GB-vdx"/>
                                             <outlet property="likeButton" destination="n0T-rg-P1D" id="nKn-kX-Zkt"/>
                                             <outlet property="likes" destination="vSF-36-Wq1" id="wNu-Xp-NJE"/>
                                             <outlet property="mainAvatar" destination="NWa-hl-lfL" id="9eO-dv-9Dz"/>
                                             <outlet property="mainPhoto" destination="HPa-fL-3si" id="Fm5-He-wHy"/>
-                                            <outlet property="ownerName" destination="4sf-Z8-zUt" id="OdF-Ny-xy2"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -17,28 +17,55 @@ protocol DataManagerProtocol {
 
     func getCurrentUser() -> User?
     
-    func getAllPosts(for user: User) -> [Post]?
+    func getAllPosts(of user: User) -> [Post]?
     
     func syncGetPost(for index: Int) -> Post?
     
-    func asyncGetPost(for index: Int, completion: (Post)->Void)
+    func asyncGetPost(for index: Int, completion: @escaping (Post)->Void)
     
-    func getIndex(for post: Post) -> Int?
+    func getIndex(of post: Post) -> Int?
     
-    func asyncDeletePost(by index: Int, completion: (Bool)->Void)
+    func postCount() -> Int
+    
+    func asyncDeletePost(by index: Int, completion: @escaping (Bool)->Void)
+    
+    func getAllLikedPosts() -> [String : [Post]]?
+    
+    func getLikedPosts(of user: User) -> [Post]?
+    
+    func updateLikedPosts(with posts: [Post], of user: User)
 }
 
 class DataManager: DataManagerProtocol {
     
     static let shared = DataManager()
     
+    let savingQueue = DispatchQueue(label: "net.torburg.saving", qos: .default)
+    let fetchingQueue = DispatchQueue(label: "net.torburg.fetching", qos: .default)
+    let fetchQueue = DispatchQueue(label: "net.torburg.fetch", qos: .default, attributes: .concurrent, autoreleaseFrequency: .never, target: nil)
+    
     private var users: [User] = []
     private var currentUser: User? = nil
     
-    var likedPosts: [String : [Post]]? = nil
+    private var likedPosts: [String : [Post]]? = nil
     
     init() {
         users = generateData()
+    }
+    
+    func getAllLikedPosts() -> [String : [Post]]? {
+        return likedPosts
+    }
+    
+    func getLikedPosts(of user: User) -> [Post]? {
+        guard let likedPosts = likedPosts, let posts = likedPosts[user.name] else { return nil }
+        return posts
+    }
+    
+    func updateLikedPosts(with posts: [Post], of user: User) {
+        if let likedPosts = likedPosts, likedPosts.keys.contains(user.name) {
+            self.likedPosts![user.name] = posts
+        }
     }
     
     func getAllUsers() -> [User] {
@@ -53,7 +80,7 @@ class DataManager: DataManagerProtocol {
         return currentUser
     }
     
-    func getAllPosts(for user: User) -> [Post]? {
+    func getAllPosts(of user: User) -> [Post]? {
         return syncGetUser(by: user.name)?.posts
     }
     
@@ -63,10 +90,15 @@ class DataManager: DataManagerProtocol {
         return post
     }
     
-    func asyncGetPost(for index: Int, completion: (Post)->Void) {
-        guard let posts = currentUser?.posts else { return }
-        let post = posts[index]
-        completion(post)
+    func asyncGetPost(for index: Int, completion: @escaping (Post)->Void) {
+        fetchingQueue.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let manager = self else { return }
+            guard let posts = manager.currentUser?.posts else { return }
+            let post = posts[index]
+            DispatchQueue.main.async {
+                completion(post)
+            }
+        }
     }
     
     func asyncGetUser(by name: String, completion: (User)->Void) {
@@ -79,19 +111,24 @@ class DataManager: DataManagerProtocol {
         return currentUser?.posts?.count ?? 0
     }
     
-    func getIndex(for post: Post) -> Int? {
+    func getIndex(of post: Post) -> Int? {
         guard let posts = currentUser?.posts else { return nil }
         return posts.firstIndex(where: { $0 == post })
     }
     
-    func asyncDeletePost(by index: Int, completion: (Bool)->Void) {
-        guard let user = currentUser, let posts = getAllPosts(for: user) else { completion(false); return }
-        let postToDelete = posts[index]
-        let postsWithoutDeleted = user.posts?.filter{ $0 != postToDelete }
-        let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
-        users.removeAll(where: { $0 == user })
-        users.append(replacingUser)
-        completion(true)
+    func asyncDeletePost(by index: Int, completion: @escaping (Bool)->Void) {
+        savingQueue.async { [weak self] in
+            guard let manager = self else { completion(false); return }
+            guard let user = manager.currentUser, let posts = manager.getAllPosts(of: user) else { completion(false); return }
+            let postToDelete = posts[index]
+            let postsWithoutDeleted = user.posts?.filter{ $0 != postToDelete }
+            let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
+            manager.users.removeAll(where: { $0 == user })
+            manager.users.append(replacingUser)
+        }
+        DispatchQueue.main.async {
+            completion(true)
+        }
     }
 }
 
@@ -124,13 +161,16 @@ extension DataManager {
         ]
         let slPosts: [Post] = [
             Post(id: UUID(), author: sl, photo: "sl1", description: "С одной стороны и тут норм, но надо ремонт сделать. А мне неочень хочется. Потому что и так уже тут много вложились в ремонт на кухне, дверь входную поставили, и так по мелочам...", date: Date(), likes: 50, comments: mfComments.sorted(by: {$0.text < $1.text})),
-            Post(id: UUID(), author: sl, photo: "sl2", description: "Про волосы, кстати, я имела в виду цвет", date: Date(), likes: 0, comments: slComments.sorted(by: {$0.text > $1.text})),
+            Post(id: UUID(), author: sl, photo: "sl2", description: "Про волосы, кстати, я имела в виду цвет", date: Date(), likes: 0, comments: slComments.sorted(by: {$0.text >
+                $1.text})),
+            Post(id: UUID(), author: sl, photo: "sl3", description: "Потому что ботокс колят, он всю мимику нахрен убивает", date: Date(), likes: 1, comments: slComments.sorted(by: {$0.text > $1.text})),
+            Post(id: UUID(), author: sl, photo: "sl4", description: "Сон снился", date: Date(), likes: 1, comments: slComments.sorted(by: {$0.text > $1.text})),
         ]
         let sofya = User(id: sl.id, avatar: sl.avatar, name: sl.name, email: sl.email, password: sl.password, followers: sl.followers, following: sl.following, posts: slPosts)
         
         
         var slLikedPosts = mfPosts.filter{ $0.description == "licking time" || $0.description == "Van Gog" }
-        slLikedPosts.append(slPosts.first!)
+        slLikedPosts.append(slPosts.last!)
         
         let mfLikedPosts = slPosts
         likedPosts = [
@@ -139,10 +179,5 @@ extension DataManager {
         ]
         
         return [torburg, sofya]
-    }
-    
-    enum Like {
-        case liked
-        case unliked
     }
 }
