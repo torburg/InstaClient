@@ -56,6 +56,7 @@ class ProfileViewControllerrViewController: UIViewController {
         let name = "sofya"
         dataManager.asyncGetUser(by: name) { user in
             
+            self.dataManager.setCurrentUser(user: user)
             navigationItem.title = user.name
             let postCount = user.posts?.count ?? 0
             self.numberOfPosts.text = String(postCount)

@@ -76,6 +76,10 @@ class DataManager: DataManagerProtocol {
         return users.filter{ $0.name == name}.first
     }
 
+    func setCurrentUser(user: User) {
+        self.currentUser = user
+    }
+
     func getCurrentUser() -> User? {
         return currentUser
     }
@@ -91,7 +95,7 @@ class DataManager: DataManagerProtocol {
     }
     
     func asyncGetPost(for index: Int, completion: @escaping (Post)->Void) {
-        fetchingQueue.asyncAfter(deadline: .now() + 2) { [weak self] in
+        fetchingQueue.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let manager = self else { return }
             guard let posts = manager.currentUser?.posts else { return }
             let post = posts[index]

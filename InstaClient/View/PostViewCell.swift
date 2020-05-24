@@ -24,7 +24,7 @@ class PostViewCell: UITableViewCell {
 
     @IBAction func likePressed(_ sender: Any) {
         post.isLiked.toggle()
-        likeButton.imageView?.image = UIImage(named: post.likeImageUrl)
+        likeButton.setImage(UIImage(named: post.likeImageUrl),for: .normal)
     }
 
     override func awakeFromNib() {

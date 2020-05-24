@@ -50,18 +50,20 @@ class PostViewModel {
             return likedPosts.contains(where: { $0 == currentPost })
         }
         set {
-            guard let currentUser = DataManager.shared.getCurrentUser() else { return }
-            guard var likedPosts = DataManager.shared.getLikedPosts(of: currentUser) else { return }
-            guard let currentPost = post else { return }
-            switch newValue {
-            case true:
-                let updatedPosts = likedPosts.filter { $0 != currentPost}
-                DataManager.shared.updateLikedPosts(with: updatedPosts, of: currentUser)
-                self.isLiked = false
-            case false:
-                likedPosts.append(currentPost)
-                DataManager.shared.updateLikedPosts(with: likedPosts, of: currentUser)
-                self.isLiked = true
+            if isLiked != newValue {
+                guard let currentUser = DataManager.shared.getCurrentUser() else { return }
+                guard var likedPosts = DataManager.shared.getLikedPosts(of: currentUser) else { return }
+                guard let currentPost = post else { return }
+                switch newValue {
+                case true:
+                    likedPosts.append(currentPost)
+                    DataManager.shared.updateLikedPosts(with: likedPosts, of: currentUser)
+                    self.isLiked = newValue
+                case false:
+                    let updatedPosts = likedPosts.filter { $0 != currentPost}
+                    DataManager.shared.updateLikedPosts(with: updatedPosts, of: currentUser)
+                    self.isLiked = newValue
+                }
             }
         }
     }
