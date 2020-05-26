@@ -14,20 +14,14 @@ protocol DataManagerProtocol {
     func syncGetUser(by name: String) -> User?
     
     func asyncGetUser(by name: String, completion: (User)->Void)
-
-    func getCurrentUser() -> User?
     
-    func getAllPosts(of user: User) -> [Post]?
+    func syncGetPost(of user: User, for index: Int) -> Post?
     
-    func syncGetPost(for index: Int) -> Post?
+    func asyncGetPost(of user: User, for index: Int, completion: @escaping (Post)->Void)
     
-    func asyncGetPost(for index: Int, completion: @escaping (Post)->Void)
+    func getIndex(of post: Post, of user: User) -> Int?
     
-    func getIndex(of post: Post) -> Int?
-    
-    func postCount() -> Int
-    
-    func asyncDeletePost(by index: Int, completion: @escaping (Bool)->Void)
+    func asyncDeletePost(of user: User, by index: Int, completion: @escaping (Response)->Void)
     
     func getAllLikedPosts() -> [String : [Post]]?
     
@@ -45,7 +39,6 @@ class DataManager: DataManagerProtocol {
     let fetchQueue = DispatchQueue(label: "net.torburg.fetch", qos: .default, attributes: .concurrent, autoreleaseFrequency: .never, target: nil)
     
     private var users: [User] = []
-    private var currentUser: User? = nil
     
     private var likedPosts: [String : [Post]]? = nil
     
@@ -76,28 +69,20 @@ class DataManager: DataManagerProtocol {
         return users.filter{ $0.name == name}.first
     }
 
-    func setCurrentUser(user: User) {
-        self.currentUser = user
-    }
-
-    func getCurrentUser() -> User? {
-        return currentUser
-    }
-    
-    func getAllPosts(of user: User) -> [Post]? {
+    private func getAllPosts(of user: User) -> [Post]? {
         return syncGetUser(by: user.name)?.posts
     }
     
-    func syncGetPost(for index: Int) -> Post? {
-        guard let posts = currentUser?.posts else { return nil }
+    func syncGetPost(of user: User, for index: Int) -> Post? {
+        guard let posts = getAllPosts(of: user) else { return nil }
         let post = posts[index]
         return post
     }
     
-    func asyncGetPost(for index: Int, completion: @escaping (Post)->Void) {
-        fetchingQueue.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+    func asyncGetPost(of user: User, for index: Int, completion: @escaping (Post)->Void) {
+        fetchingQueue.asyncAfter(deadline: .now() + 2) { [weak self] in
             guard let manager = self else { return }
-            guard let posts = manager.currentUser?.posts else { return }
+            guard let posts = manager.users.filter({ $0 == user }).first?.posts else { return }
             let post = posts[index]
             DispatchQueue.main.async {
                 completion(post)
@@ -107,23 +92,22 @@ class DataManager: DataManagerProtocol {
     
     func asyncGetUser(by name: String, completion: (User)->Void) {
         guard let user = users.first(where: { $0.name == name } ) else { return }
-        currentUser = user
         completion(user)
     }
     
-    func postCount() -> Int {
-        return currentUser?.posts?.count ?? 0
+    func postCount(for user: User) -> Int {
+        return users.filter({ $0 == user }).first?.posts?.count ?? 0
     }
     
-    func getIndex(of post: Post) -> Int? {
-        guard let posts = currentUser?.posts else { return nil }
+    func getIndex(of post: Post, of user: User) -> Int? {
+        guard let posts = getAllPosts(of: user) else { return nil }
         return posts.firstIndex(where: { $0 == post })
     }
     
-    func asyncDeletePost(by index: Int, completion: @escaping (Bool)->Void) {
+    func asyncDeletePost(of user: User, by index: Int, completion: @escaping (Response)->Void) {
         savingQueue.async { [weak self] in
-            guard let manager = self else { completion(false); return }
-            guard let user = manager.currentUser, let posts = manager.getAllPosts(of: user) else { completion(false); return }
+            guard let manager = self else { completion(Response.error); return }
+            guard let posts = manager.getAllPosts(of: user) else { completion(Response.error); return }
             let postToDelete = posts[index]
             let postsWithoutDeleted = user.posts?.filter{ $0 != postToDelete }
             let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
@@ -131,9 +115,14 @@ class DataManager: DataManagerProtocol {
             manager.users.append(replacingUser)
         }
         DispatchQueue.main.async {
-            completion(true)
+            completion(Response.success)
         }
     }
+}
+
+enum Response {
+    case success
+    case error
 }
 
 

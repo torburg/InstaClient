@@ -9,6 +9,8 @@
 import UIKit
 
 class ProfileViewControllerrViewController: UIViewController {
+    
+    var user: User? = nil
 
     @IBOutlet weak var numberOfPosts: UILabel!
     @IBOutlet weak var numberOfFollowers: UILabel!
@@ -19,7 +21,6 @@ class ProfileViewControllerrViewController: UIViewController {
     @IBOutlet weak var editButton: UIButton!
     
     private let minimumSpacing: CGFloat = 3.0
-    private let imagesCount = 6
     private let maxItemsInLine = 3
     lazy private var dataManager = DataManager.shared
     
@@ -37,7 +38,7 @@ class ProfileViewControllerrViewController: UIViewController {
         editButton.layer.borderWidth = 1
         editButton.layer.borderColor = UIColor(red: 0.859, green: 0.859, blue: 0.859, alpha: 1).cgColor
         
-        gallery.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "reuseID")
+        gallery.register(GalleryViewCell.self, forCellWithReuseIdentifier: GalleryViewCell.reuseID)
         
         navigationController?.navigationBar.backgroundColor = view.backgroundColor
         
@@ -55,8 +56,8 @@ class ProfileViewControllerrViewController: UIViewController {
 //        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
         let name = "sofya"
         dataManager.asyncGetUser(by: name) { user in
+            self.user = user
             
-            self.dataManager.setCurrentUser(user: user)
             navigationItem.title = user.name
             let postCount = user.posts?.count ?? 0
             self.numberOfPosts.text = String(postCount)
@@ -70,48 +71,34 @@ class ProfileViewControllerrViewController: UIViewController {
             self.avatar.contentMode = .scaleAspectFill
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        gallery.reloadData()
+    }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
 extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataManager.postCount()
+        guard let currentUser = user else { return 0 }
+        return dataManager.postCount(for: currentUser)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuseID", for: indexPath)
-        
-        let indicator = UIActivityIndicatorView(style: .medium)
-        cell.contentView.addSubview(indicator)
-        indicator.center = cell.contentView.center
-        indicator.startAnimating()
-        dataManager.asyncGetPost(for: indexPath.row) { (post) in
-            guard let image = UIImage(named: post.photo) else { return }
-            
-            // FIXME: - Fix filling cell with image with proportional scaling
-            let cellSize = cell.bounds.size
-            DispatchQueue.global(qos: .utility).async {
-                let resizedImage = resized(image, to: cellSize)
-                DispatchQueue.main.async {
-                    indicator.stopAnimating()
-                    indicator.removeFromSuperview()
-                    let imageView = UIImageView(image: resizedImage)
-                    imageView.contentMode = .scaleToFill
-
-                    cell.contentView.addSubview(imageView)
-                    cell.contentMode = .scaleAspectFit
-                }
-            }
-        }
-
+        let dequedCell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryViewCell.reuseID, for: indexPath)
+        guard let cell = dequedCell as? GalleryViewCell else { return dequedCell}
+        cell.user = user
+        cell.onBind(for: indexPath.row)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let currentUser = user else { return }
         guard let postsListVC = storyboard?.instantiateViewController(identifier: "postListView") else { return }
         guard let vc = postsListVC as? PostsListViewController else { return }
-        vc.currentPost = dataManager.syncGetPost(for: indexPath.row)
+        vc.currentPost = dataManager.syncGetPost(of: currentUser, for: indexPath.row)
         navigationController?.pushViewController(vc, animated: false)
         // FIXME: - Do I need this?..
 //            self.performSegue(withIdentifier: "showPost", sender: nil)

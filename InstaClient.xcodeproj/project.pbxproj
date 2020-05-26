@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8803B965247D76B700B07D06 /* GalleryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8803B964247D76B700B07D06 /* GalleryViewCell.swift */; };
 		8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8816461B24740A0C0021508D /* PostsListViewController.swift */; };
 		8816462124740D0A0021508D /* PostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8816462024740D0A0021508D /* PostViewCell.swift */; };
 		881933982479BC7600102133 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881933972479BC7500102133 /* PostViewModel.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8803B964247D76B700B07D06 /* GalleryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewCell.swift; sourceTree = "<group>"; };
 		8816461B24740A0C0021508D /* PostsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsListViewController.swift; sourceTree = "<group>"; };
 		8816462024740D0A0021508D /* PostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewCell.swift; sourceTree = "<group>"; };
 		881933972479BC7500102133 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 			children = (
 				88601940246D549000054B73 /* Main.storyboard */,
 				8816462024740D0A0021508D /* PostViewCell.swift */,
+				8803B964247D76B700B07D06 /* GalleryViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				8860193B246D549000054B73 /* AppDelegate.swift in Sources */,
 				8860195B246EA6F200054B73 /* User.swift in Sources */,
 				8860195F246EA87D00054B73 /* Comment.swift in Sources */,
+				8803B965247D76B700B07D06 /* GalleryViewCell.swift in Sources */,
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
 				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
 				8860195D246EA78600054B73 /* Post.swift in Sources */,

@@ -35,8 +35,8 @@ class PostViewModel {
         return post?.description ?? ""
     }
 
-    func getData(by index: Int, completion: @escaping (PostViewModel)->Void) {
-        DataManager.shared.asyncGetPost(for: index) { (post) in
+    func getData(for user: User, by index: Int, completion: @escaping (PostViewModel)->Void) {
+        DataManager.shared.asyncGetPost(of: user, for: index) { (post) in
             self.post = post
             completion(self)
         }
@@ -44,24 +44,22 @@ class PostViewModel {
 
     var isLiked: Bool {
         get {
-            guard let currentUser = DataManager.shared.getCurrentUser() else { return false }
-            guard let likedPosts = DataManager.shared.getLikedPosts(of: currentUser) else { return false }
             guard let currentPost = post else { return false }
+            guard let likedPosts = DataManager.shared.getLikedPosts(of: currentPost.author) else { return false }
             return likedPosts.contains(where: { $0 == currentPost })
         }
         set {
             if isLiked != newValue {
-                guard let currentUser = DataManager.shared.getCurrentUser() else { return }
-                guard var likedPosts = DataManager.shared.getLikedPosts(of: currentUser) else { return }
                 guard let currentPost = post else { return }
+                guard var likedPosts = DataManager.shared.getLikedPosts(of: currentPost.author) else { return }
                 switch newValue {
                 case true:
                     likedPosts.append(currentPost)
-                    DataManager.shared.updateLikedPosts(with: likedPosts, of: currentUser)
+                    DataManager.shared.updateLikedPosts(with: likedPosts, of: currentPost.author)
                     self.isLiked = newValue
                 case false:
                     let updatedPosts = likedPosts.filter { $0 != currentPost}
-                    DataManager.shared.updateLikedPosts(with: updatedPosts, of: currentUser)
+                    DataManager.shared.updateLikedPosts(with: updatedPosts, of: currentPost.author)
                     self.isLiked = newValue
                 }
             }
