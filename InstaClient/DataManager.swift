@@ -80,7 +80,7 @@ class DataManager: DataManagerProtocol {
     }
     
     func asyncGetPost(of user: User, for index: Int, completion: @escaping (Post)->Void) {
-        fetchingQueue.asyncAfter(deadline: .now() + 2) { [weak self] in
+        fetchingQueue.asyncAfter(deadline: .now()) { [weak self] in
             guard let manager = self else { return }
             guard let posts = manager.users.filter({ $0 == user }).first?.posts else { return }
             let post = posts[index]
@@ -117,6 +117,12 @@ class DataManager: DataManagerProtocol {
         DispatchQueue.main.async {
             completion(Response.success)
         }
+    }
+    
+    func filterPosts(of user: User, contains text: String, completion: @escaping ([Post])->Void) {
+        guard let allPosts = getAllPosts(of: user) else { completion([]); return }
+        let filtredPosts = allPosts.filter({ $0.description?.lowercased().contains(text.lowercased()) ?? false })
+        completion(filtredPosts)
     }
 }
 

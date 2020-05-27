@@ -279,8 +279,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" placeholder="Search Text" translatesAutoresizingMaskIntoConstraints="NO" id="iZ1-CJ-F5q">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits" keyboardType="twitter"/>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FDf-79-k7y">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="100" width="414" height="762"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostListCellView" rowHeight="642" id="DyZ-ll-QaT" customClass="PostViewCell" customModule="InstaClient" customModuleProvider="target">
@@ -413,16 +417,20 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="FDf-79-k7y" firstAttribute="top" secondItem="u03-LF-A5L" secondAttribute="top" id="U2E-3q-8dE"/>
+                            <constraint firstItem="u03-LF-A5L" firstAttribute="trailing" secondItem="iZ1-CJ-F5q" secondAttribute="trailing" id="Cf2-ql-Kax"/>
+                            <constraint firstItem="FDf-79-k7y" firstAttribute="top" secondItem="iZ1-CJ-F5q" secondAttribute="bottom" id="MRS-QD-N45"/>
                             <constraint firstItem="u03-LF-A5L" firstAttribute="bottom" secondItem="FDf-79-k7y" secondAttribute="bottom" id="fhI-5d-jtH"/>
                             <constraint firstItem="u03-LF-A5L" firstAttribute="trailing" secondItem="FDf-79-k7y" secondAttribute="trailing" id="ga7-HI-Dkm"/>
+                            <constraint firstItem="iZ1-CJ-F5q" firstAttribute="top" secondItem="u03-LF-A5L" secondAttribute="top" id="n2S-Qs-48v"/>
                             <constraint firstItem="FDf-79-k7y" firstAttribute="leading" secondItem="u03-LF-A5L" secondAttribute="leading" id="vhV-88-CHo"/>
+                            <constraint firstItem="iZ1-CJ-F5q" firstAttribute="leading" secondItem="u03-LF-A5L" secondAttribute="leading" id="yKD-vP-joe"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="u03-LF-A5L"/>
                     </view>
                     <navigationItem key="navigationItem" id="qeo-jx-6ij"/>
                     <connections>
                         <outlet property="postsList" destination="FDf-79-k7y" id="gLP-tB-XMQ"/>
+                        <outlet property="searchBar" destination="iZ1-CJ-F5q" id="PAU-kO-yJt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ygT-ya-zTz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

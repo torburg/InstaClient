@@ -10,15 +10,25 @@ import UIKit
 
 class PostsListViewController: UIViewController {
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var postsList: UITableView!
     var currentUser: User? = nil
     var currentPost: Post? = nil
+    
+    lazy var filteredPosts = [Post]()
+    var isFiltering: Bool {
+        return (searchBar.text != nil && !searchBar.text!.isEmpty)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         DataManager.shared.asyncGetUser(by: "sofya") { user in
             self.currentUser = user
         }
+
+        searchBar.delegate = self
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resignResponders))
+        self.view.addGestureRecognizer(tapGestureRecognizer)
         
         setNavigationView()
         
@@ -47,12 +57,21 @@ class PostsListViewController: UIViewController {
         
         navigationItem.titleView = stackView
     }
+    @objc
+    func resignResponders() {
+        searchBar.resignFirstResponder()
+    }
+    
 }
 
 extension PostsListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let user = currentUser else { return 0 }
-        return DataManager.shared.postCount(for: user)
+        if isFiltering {
+            return filteredPosts.count
+        } else {
+            return DataManager.shared.postCount(for: user)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -60,7 +79,13 @@ extension PostsListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = dequedCell as? PostViewCell else { return dequedCell }
         cell.actionDelegate = self
         cell.user = currentUser
-        cell.onBind(for: indexPath.row)
+        if isFiltering {
+            let postViewModel = PostViewModel()
+            postViewModel.post = filteredPosts[indexPath.row]
+            cell.fillCell(with: postViewModel)
+        } else {
+            cell.onBind(for: indexPath.row)            
+        }
         return cell
     }
     
@@ -73,5 +98,20 @@ extension PostsListViewController {
     func deletePost(at index: Int, by action: UIAlertAction) {
         postsList.deleteRows(at: [IndexPath(item: index, section: 0)], with: .left)
         postsList.reloadData()
+    }
+}
+
+extension PostsListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let user = currentUser else { return }
+        DataManager.shared.filterPosts(of: user, contains: searchText) { [weak self] (posts) in
+            guard let self = self else { return }
+            self.filteredPosts = posts
+            self.postsList.reloadData()
+        }
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }
