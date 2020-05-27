@@ -32,6 +32,11 @@ protocol DataManagerProtocol {
 
 class DataManager: DataManagerProtocol {
     
+    private enum UserDefaultsStorage {
+        static let users      = "users"
+        static let likedPosts = "likedPosts"
+    }
+    
     static let shared = DataManager()
     
     let savingQueue = DispatchQueue(label: "net.torburg.saving", qos: .default)
@@ -42,8 +47,13 @@ class DataManager: DataManagerProtocol {
     
     private var likedPosts: [String : [Post]]? = nil
     
+    private var userDefaults = UserDefaults.standard
+    
     init() {
-        users = generateData()
+        load()
+        if users.isEmpty {
+            users = generateData()
+        }
     }
     
     func getAllLikedPosts() -> [String : [Post]]? {
@@ -113,6 +123,7 @@ class DataManager: DataManagerProtocol {
             let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
             manager.users.removeAll(where: { $0 == user })
             manager.users.append(replacingUser)
+            manager.save()
         }
         DispatchQueue.main.async {
             completion(Response.success)
@@ -123,6 +134,28 @@ class DataManager: DataManagerProtocol {
         guard let allPosts = getAllPosts(of: user) else { completion([]); return }
         let filtredPosts = allPosts.filter({ $0.description?.lowercased().contains(text.lowercased()) ?? false })
         completion(filtredPosts)
+    }
+    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        let encodedUsers = try? jsonEncoder.encode(users)
+        userDefaults.setValue(encodedUsers, forKey: UserDefaultsStorage.users)
+        
+        if likedPosts != nil, !likedPosts!.isEmpty {
+            let encodedLikedPosts = try? jsonEncoder.encode(likedPosts)
+            userDefaults.setValue(encodedLikedPosts, forKey: UserDefaultsStorage.likedPosts)
+        }
+    }
+    
+    func load() {
+        let jsonDecoder = JSONDecoder()
+        guard let userData = userDefaults.object(forKey: UserDefaultsStorage.users) as? Data else { return }
+        guard let fetchedUsers = try? jsonDecoder.decode([User].self, from: userData) else { return }
+        users = fetchedUsers
+        
+        guard let likedPostsData = userDefaults.object(forKey: UserDefaultsStorage.likedPosts) as? Data else { return }
+        guard let fetchedLikedposts = try? jsonDecoder.decode([String : [Post]].self, from: likedPostsData) else { return }
+        likedPosts = fetchedLikedposts
     }
 }
 

@@ -73,7 +73,9 @@ class ProfileViewControllerrViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // FIXME: - When cell is only one it's located in the center of line
         super.viewWillAppear(animated)
+        getData()
         gallery.reloadData()
     }
 }
