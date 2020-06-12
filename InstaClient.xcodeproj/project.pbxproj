@@ -11,6 +11,13 @@
 		8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8816461B24740A0C0021508D /* PostsListViewController.swift */; };
 		8816462124740D0A0021508D /* PostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8816462024740D0A0021508D /* PostViewCell.swift */; };
 		881933982479BC7600102133 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881933972479BC7500102133 /* PostViewModel.swift */; };
+		882206B42493A4E300281DFA /* ImageTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206B32493A4E300281DFA /* ImageTransformer.swift */; };
+		882206BB2493A5BB00281DFA /* Post+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206B52493A5BB00281DFA /* Post+CoreDataClass.swift */; };
+		882206BC2493A5BB00281DFA /* Post+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206B62493A5BB00281DFA /* Post+CoreDataProperties.swift */; };
+		882206BD2493A5BB00281DFA /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206B72493A5BB00281DFA /* User+CoreDataClass.swift */; };
+		882206BE2493A5BB00281DFA /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206B82493A5BB00281DFA /* User+CoreDataProperties.swift */; };
+		882206BF2493A5BB00281DFA /* Comment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206B92493A5BB00281DFA /* Comment+CoreDataClass.swift */; };
+		882206C02493A5BB00281DFA /* Comment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882206BA2493A5BB00281DFA /* Comment+CoreDataProperties.swift */; };
 		8860193B246D549000054B73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193A246D549000054B73 /* AppDelegate.swift */; };
 		8860193D246D549000054B73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193C246D549000054B73 /* SceneDelegate.swift */; };
 		88601942246D549000054B73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601940246D549000054B73 /* Main.storyboard */; };
@@ -33,6 +40,13 @@
 		8816461B24740A0C0021508D /* PostsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsListViewController.swift; sourceTree = "<group>"; };
 		8816462024740D0A0021508D /* PostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewCell.swift; sourceTree = "<group>"; };
 		881933972479BC7500102133 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		882206B32493A4E300281DFA /* ImageTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTransformer.swift; sourceTree = "<group>"; };
+		882206B52493A5BB00281DFA /* Post+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Post+CoreDataClass.swift"; path = "InstaClient/Model/Post+CoreDataClass.swift"; sourceTree = "<group>"; };
+		882206B62493A5BB00281DFA /* Post+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Post+CoreDataProperties.swift"; path = "InstaClient/Model/Post+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		882206B72493A5BB00281DFA /* User+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "User+CoreDataClass.swift"; path = "InstaClient/Model/User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		882206B82493A5BB00281DFA /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "User+CoreDataProperties.swift"; path = "InstaClient/Model/User+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		882206B92493A5BB00281DFA /* Comment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comment+CoreDataClass.swift"; path = "InstaClient/Model/Comment+CoreDataClass.swift"; sourceTree = "<group>"; };
+		882206BA2493A5BB00281DFA /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comment+CoreDataProperties.swift"; path = "InstaClient/Model/Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		88601937246D549000054B73 /* InstaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8860193A246D549000054B73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8860193C246D549000054B73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,9 +87,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		882206B22491472D00281DFA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				881933972479BC7500102133 /* PostViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		8860192E246D549000054B73 = {
 			isa = PBXGroup;
 			children = (
+				882206B52493A5BB00281DFA /* Post+CoreDataClass.swift */,
+				882206B62493A5BB00281DFA /* Post+CoreDataProperties.swift */,
+				882206B72493A5BB00281DFA /* User+CoreDataClass.swift */,
+				882206B82493A5BB00281DFA /* User+CoreDataProperties.swift */,
+				882206B92493A5BB00281DFA /* Comment+CoreDataClass.swift */,
+				882206BA2493A5BB00281DFA /* Comment+CoreDataProperties.swift */,
 				88601939246D549000054B73 /* InstaClient */,
 				88601938246D549000054B73 /* Products */,
 			);
@@ -128,10 +156,11 @@
 		88601959246EA6E500054B73 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				882206B22491472D00281DFA /* ViewModel */,
 				8860195A246EA6F200054B73 /* User.swift */,
 				8860195C246EA78600054B73 /* Post.swift */,
-				881933972479BC7500102133 /* PostViewModel.swift */,
 				8860195E246EA87D00054B73 /* Comment.swift */,
+				882206B32493A4E300281DFA /* ImageTransformer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -229,17 +258,24 @@
 				8816462124740D0A0021508D /* PostViewCell.swift in Sources */,
 				88601957246DFC6200054B73 /* Extensions.swift in Sources */,
 				8860193B246D549000054B73 /* AppDelegate.swift in Sources */,
+				882206BD2493A5BB00281DFA /* User+CoreDataClass.swift in Sources */,
 				8860195B246EA6F200054B73 /* User.swift in Sources */,
 				8860195F246EA87D00054B73 /* Comment.swift in Sources */,
 				8803B965247D76B700B07D06 /* GalleryViewCell.swift in Sources */,
+				882206BB2493A5BB00281DFA /* Post+CoreDataClass.swift in Sources */,
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
+				882206B42493A4E300281DFA /* ImageTransformer.swift in Sources */,
 				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
 				8860195D246EA78600054B73 /* Post.swift in Sources */,
+				882206BF2493A5BB00281DFA /* Comment+CoreDataClass.swift in Sources */,
+				882206BC2493A5BB00281DFA /* Post+CoreDataProperties.swift in Sources */,
 				881933982479BC7600102133 /* PostViewModel.swift in Sources */,
 				88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */,
+				882206C02493A5BB00281DFA /* Comment+CoreDataProperties.swift in Sources */,
 				8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */,
 				88601968246F3BE500054B73 /* DataManager.swift in Sources */,
 				88601961246EB46F00054B73 /* AuthViewController.swift in Sources */,
+				882206BE2493A5BB00281DFA /* User+CoreDataProperties.swift in Sources */,
 				8860193D246D549000054B73 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
