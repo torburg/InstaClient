@@ -61,12 +61,12 @@ class ProfileViewControllerrViewController: UIViewController {
             navigationItem.title = user.name
             let postCount = user.posts?.count ?? 0
             self.numberOfPosts.text = String(postCount)
-            let followers = user.followers ?? 0
+            let followers = user.followers
             self.numberOfFollowers.text = String(followers)
-            let following = user.following ?? 0
+            let following = user.following
             self.numberOfFollowing.text = String(following)
 
-            guard let avatarURL = user.avatar, let avatarImage = UIImage(named: avatarURL) else { return }
+            guard let avatarImage = user.avatar else { return }
             self.avatar.image = avatarImage
             self.avatar.contentMode = .scaleAspectFill
         }

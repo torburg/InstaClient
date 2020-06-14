@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-
+import UIKit
 
 extension Post {
 
@@ -17,12 +17,11 @@ extension Post {
         return NSFetchRequest<Post>(entityName: "Post")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var photo: UIImage?
     @NSManaged public var content: String?
     @NSManaged public var date: Date?
     @NSManaged public var likes: Int16
-    @NSManaged public var author: User?
+    @NSManaged public var photo: UIImage?
+    @NSManaged public var author: User
     @NSManaged public var comments: NSSet?
 
 }

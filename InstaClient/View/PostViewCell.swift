@@ -25,7 +25,7 @@ class PostViewCell: UITableViewCell {
     @IBOutlet weak var likes: UILabel!
 
     @IBAction func likePressed(_ sender: Any) {
-        postViewModel.isLiked.toggle()
+//        postViewModel.isLiked.toggle()
         likeButton.setImage(UIImage(named: postViewModel.likeImageUrl),for: .normal)
     }
 
@@ -74,29 +74,28 @@ class PostViewCell: UITableViewCell {
         })
     }
 
-    func fillCell(with post: PostViewModel) {
-        self.postViewModel = post
+    func fillCell(with postViewModel: PostViewModel) {
+        self.postViewModel = postViewModel
         
-        if !post.authorAvatarUrl.isEmpty {
-            let avatarImage = UIImage(named: post.authorAvatarUrl) ?? UIImage()
+        if let avatarImage = postViewModel.post?.author.avatar {
             mainAvatar.image = resized(avatarImage, to: mainAvatar.frame.size)
         } else {
            mainAvatar.image = UIImage()
         }
-        authorName.text = post.authorName
-        if !post.mainPhoto.isEmpty {
-           mainPhoto.image = UIImage(named: post.mainPhoto)
+        authorName.text = postViewModel.authorName
+        if let mainImage = postViewModel.post?.photo {
+           mainPhoto.image = mainImage
         } else {
            mainPhoto.image = UIImage()
         }
-        if !post.likeImageUrl.isEmpty {
-           likeButton.imageView?.image = UIImage(named: post.likeImageUrl)
+        if !postViewModel.likeImageUrl.isEmpty {
+           likeButton.imageView?.image = UIImage(named: postViewModel.likeImageUrl)
         } else {
            likeButton.imageView?.image = UIImage()
         }
-        likes.text = post.likesText
+        likes.text = postViewModel.likesText
 
-        content.text = post.contentText
+        content.text = postViewModel.contentText
         content.textContainer.maximumNumberOfLines = 3
     }
 }

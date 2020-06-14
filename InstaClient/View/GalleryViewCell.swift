@@ -26,7 +26,7 @@ class GalleryViewCell: UICollectionViewCell {
         dataManager.asyncGetPost(of: currentUser, for: index) { (post) in
             indicator.stopAnimating()
             indicator.removeFromSuperview()
-            guard let image = UIImage(named: post.photo) else { return }
+            guard let image = post.photo else { return }
             
             // FIXME: - Fix filling cell with image with proportional scaling
             let cellSize = self.bounds.size

@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-
+import UIKit
 
 extension User {
 
@@ -17,14 +17,31 @@ extension User {
         return NSFetchRequest<User>(entityName: "User")
     }
 
-    @NSManaged public var id: UUID?
     @NSManaged public var avatar: UIImage?
-    @NSManaged public var name: String?
-    @NSManaged public var email: String?
-    @NSManaged public var password: String?
+    @NSManaged public var email: String
     @NSManaged public var followers: Int16
     @NSManaged public var following: Int16
+    @NSManaged public var name: String
+    @NSManaged public var password: String
+    @NSManaged public var comments: NSSet?
     @NSManaged public var posts: NSSet?
+
+}
+
+// MARK: Generated accessors for comments
+extension User {
+
+    @objc(addCommentsObject:)
+    @NSManaged public func addToComments(_ value: Comment)
+
+    @objc(removeCommentsObject:)
+    @NSManaged public func removeFromComments(_ value: Comment)
+
+    @objc(addComments:)
+    @NSManaged public func addToComments(_ values: NSSet)
+
+    @objc(removeComments:)
+    @NSManaged public func removeFromComments(_ values: NSSet)
 
 }
 

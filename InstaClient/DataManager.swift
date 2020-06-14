@@ -24,11 +24,11 @@ protocol DataManagerProtocol {
     
     func asyncDeletePost(of user: User, by index: Int, completion: @escaping (Response)->Void)
     
-    func getAllLikedPosts() -> [String : [Post]]?
+//    func getAllLikedPosts() -> [String : [Post]]?
     
-    func getLikedPosts(of user: User) -> [Post]?
+//    func getLikedPosts(of user: User) -> [Post]?
     
-    func updateLikedPosts(with posts: [Post], of user: User)
+//    func updateLikedPosts(with posts: [Post], of user: User)
 }
 
 class DataManager: DataManagerProtocol {
@@ -46,32 +46,19 @@ class DataManager: DataManagerProtocol {
     
     private var users: [User] = []
     
-    private var likedPosts: [String : [Post]]? = nil
+    
+    // TODO: - Add liked Posts
+    private var likedPosts: [Post]? = nil
     
     private var userDefaults = UserDefaults.standard
     
     init() {
         load()
         if users.isEmpty {
-            users = generateData()
+            users = self.generateData()
         }
     }
-    
-    func getAllLikedPosts() -> [String : [Post]]? {
-        return likedPosts
-    }
-    
-    func getLikedPosts(of user: User) -> [Post]? {
-        guard let likedPosts = likedPosts, let posts = likedPosts[user.name] else { return nil }
-        return posts
-    }
-    
-    func updateLikedPosts(with posts: [Post], of user: User) {
-        if let likedPosts = likedPosts, likedPosts.keys.contains(user.name) {
-            self.likedPosts![user.name] = posts
-        }
-    }
-    
+
     func getAllUsers() -> [User] {
         return users
     }
@@ -81,7 +68,8 @@ class DataManager: DataManagerProtocol {
     }
 
     private func getAllPosts(of user: User) -> [Post]? {
-        return syncGetUser(by: user.name)?.posts
+//        return syncGetUser(by: user.name)?.posts
+        return nil
     }
     
     func syncGetPost(of user: User, for index: Int) -> Post? {
@@ -91,17 +79,20 @@ class DataManager: DataManagerProtocol {
     }
     
     func asyncGetPost(of user: User, for index: Int, completion: @escaping (Post)->Void) {
-        fetchingQueue.asyncAfter(deadline: .now()) { [weak self] in
-            guard let manager = self else { return }
-            guard let posts = manager.users.filter({ $0 == user }).first?.posts else { return }
-            let post = posts[index]
-            DispatchQueue.main.async {
-                completion(post)
-            }
-        }
+        
+        // FIXME: - CoreData Fetching
+//        fetchingQueue.asyncAfter(deadline: .now()) { [weak self] in
+//            guard let manager = self else { return }
+//            guard let posts = manager.users.filter({ $0 == user }).first?.posts else { return }
+//            let post = posts.dropFirst(index)
+//            DispatchQueue.main.async {
+//                completion(post)
+//            }
+//        }
     }
     
     func asyncGetUser(by name: String, completion: (User)->Void) {
+        // FIXME: - CoreData Fetching
         guard let user = users.first(where: { $0.name == name } ) else { return }
         completion(user)
     }
@@ -115,53 +106,53 @@ class DataManager: DataManagerProtocol {
         return posts.firstIndex(where: { $0 == post })
     }
     
+    // FIXME: - CoreData Fetching
     func asyncDeletePost(of user: User, by index: Int, completion: @escaping (Response)->Void) {
-        savingQueue.async { [weak self] in
-            guard let manager = self else { completion(Response.error); return }
-            guard let posts = manager.getAllPosts(of: user) else { completion(Response.error); return }
-            let postToDelete = posts[index]
-            let postsWithoutDeleted = user.posts?.filter{ $0 != postToDelete }
-            let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
-            manager.users.removeAll(where: { $0 == user })
-            manager.users.append(replacingUser)
-            manager.save()
-        }
-        DispatchQueue.main.async {
-            completion(Response.success)
-        }
+//        savingQueue.async { [weak self] in
+//            guard let manager = self else { completion(Response.error); return }
+//            guard let posts = manager.getAllPosts(of: user) else { completion(Response.error); return }
+//            let postToDelete = posts[index]
+//            let postsWithoutDeleted = user.posts?.filter{ $0 != postToDelete }
+//            let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
+//            manager.users.removeAll(where: { $0 == user })
+//            manager.users.append(replacingUser)
+//            manager.save()
+//        }
+//        DispatchQueue.main.async {
+//            completion(Response.success)
+//        }
     }
     
+    // FIXME: - CoreData Fetching
     func filterPosts(of user: User, contains text: String, completion: @escaping ([Post])->Void) {
         guard let allPosts = getAllPosts(of: user) else { completion([]); return }
-        let filtredPosts = allPosts.filter({ $0.description?.lowercased().contains(text.lowercased()) ?? false })
-        completion(filtredPosts)
+//        let filtredPosts = allPosts.filter({ $0.description?.lowercased().contains(text.lowercased()) ?? false })
+        completion(allPosts)
     }
     
     func save() {
-        let jsonEncoder = JSONEncoder()
-        let encodedUsers = try? jsonEncoder.encode(users)
-        userDefaults.setValue(encodedUsers, forKey: UserDefaultsStorage.users)
-        
-        if likedPosts != nil, !likedPosts!.isEmpty {
-            let encodedLikedPosts = try? jsonEncoder.encode(likedPosts)
-            userDefaults.setValue(encodedLikedPosts, forKey: UserDefaultsStorage.likedPosts)
+        // MARK: - Don't forget save liked post??
+        do {
+            try viewContext.save()
+        } catch let error {
+            print("Unable to save viewContext: \(error)")
         }
     }
     
     func load() {
-        let jsonDecoder = JSONDecoder()
-        guard let userData = userDefaults.object(forKey: UserDefaultsStorage.users) as? Data else { return }
-        guard let fetchedUsers = try? jsonDecoder.decode([User].self, from: userData) else { return }
-        users = fetchedUsers
-        
-        guard let likedPostsData = userDefaults.object(forKey: UserDefaultsStorage.likedPosts) as? Data else { return }
-        guard let fetchedLikedposts = try? jsonDecoder.decode([String : [Post]].self, from: likedPostsData) else { return }
-        likedPosts = fetchedLikedposts
+        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+        do {
+            users = try viewContext.fetch(fetchRequest)
+        } catch let error {
+            print(error)
+        }
     }
     
     // MARK: - CoreData
+    
+    lazy var viewContext = persistentContainer.viewContext
 
-    var persistentContainer: NSPersistentContainer = {
+    lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "InstaClient")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -172,10 +163,9 @@ class DataManager: DataManagerProtocol {
     }()
 
     func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
+        if viewContext.hasChanges {
             do {
-                try context.save()
+                try viewContext.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
@@ -187,54 +177,4 @@ class DataManager: DataManagerProtocol {
 enum Response {
     case success
     case error
-}
-
-
-extension DataManager {
-    
-    
-    
-    private func generateData() -> [User] {
-        let mf = User(id: UUID(), avatar: "a_mf", name: "torburg_max", email: "torburg@yandex.ru", password: "max123", followers: 0, following: 5, posts: nil)
-        let mfComments: [Comment] = [
-            Comment(id: UUID(), author: mf, text: "AWESOME", date: Date(), likes: 0),
-            Comment(id: UUID(), author: mf, text: "not bad", date: Date(), likes: 0),
-            Comment(id: UUID(), author: mf, text: "PUTIN!!11!!", date: Date(), likes: 1000),
-        ]
-        let mfPosts: [Post] = [
-            Post(id: UUID(), author: mf, photo: "color_study", description: "Kandinskiy", date: Date(), likes: 5, comments: mfComments.sorted(by: {$0.text < $1.text})),
-            Post(id: UUID(), author: mf, photo: "starry_night", description: "Van Gog", date: Date(), likes: 2, comments: mfComments.sorted(by: {$0.text > $1.text})),
-            Post(id: UUID(), author: mf, photo: "tomato_soup", description: "TOMAAATOOO", date: Date(), likes: 10, comments: mfComments.sorted(by: {$0.likes > $1.likes})),
-            Post(id: UUID(), author: mf, photo: "dali", description: "licking time", date: Date(), likes: 100000, comments: mfComments.sorted(by: {$0.likes > $1.likes})),
-            Post(id: UUID(), author: mf, photo: "picasso", description: "pcs", date: Date(), likes: 0, comments: mfComments.sorted(by: {$0.likes < $1.likes})),
-        ]
-        let torburg = User(id: mf.id, avatar: mf.avatar, name: mf.name, email: mf.email, password: mf.password, followers: mf.followers, following: mf.following, posts: mfPosts)
-        
-        let sl = User(id: UUID(), avatar: "slavatar", name: "sofya", email: "lapuloh@yandex.ru", password: "snya123", followers: 103, following: 515, posts: nil)
-        let slComments: [Comment] = [
-            Comment(id: UUID(), author: mf, text: "AWESOME", date: Date(), likes: 0),
-            Comment(id: UUID(), author: mf, text: "fffffff", date: Date(), likes: 0),
-            Comment(id: UUID(), author: sl, text: "LUKASHENKO!!11!!", date: Date(), likes: 1000),
-        ]
-        let slPosts: [Post] = [
-            Post(id: UUID(), author: sl, photo: "sl1", description: "С одной стороны и тут норм, но надо ремонт сделать. А мне неочень хочется. Потому что и так уже тут много вложились в ремонт на кухне, дверь входную поставили, и так по мелочам...", date: Date(), likes: 50, comments: mfComments.sorted(by: {$0.text < $1.text})),
-            Post(id: UUID(), author: sl, photo: "sl2", description: "Про волосы, кстати, я имела в виду цвет", date: Date(), likes: 0, comments: slComments.sorted(by: {$0.text >
-                $1.text})),
-            Post(id: UUID(), author: sl, photo: "sl3", description: "Потому что ботокс колят, он всю мимику нахрен убивает", date: Date(), likes: 1, comments: slComments.sorted(by: {$0.text > $1.text})),
-            Post(id: UUID(), author: sl, photo: "sl4", description: "Сон снился", date: Date(), likes: 1, comments: slComments.sorted(by: {$0.text > $1.text})),
-        ]
-        let sofya = User(id: sl.id, avatar: sl.avatar, name: sl.name, email: sl.email, password: sl.password, followers: sl.followers, following: sl.following, posts: slPosts)
-        
-        
-        var slLikedPosts = mfPosts.filter{ $0.description == "licking time" || $0.description == "Van Gog" }
-        slLikedPosts.append(slPosts.last!)
-        
-        let mfLikedPosts = slPosts
-        likedPosts = [
-            "torburg_max": mfLikedPosts,
-            "sofya": slLikedPosts
-        ]
-        
-        return [torburg, sofya]
-    }
 }
