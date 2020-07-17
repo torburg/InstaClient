@@ -11,7 +11,7 @@ import CoreData
 import UIKit
 
 extension DataManager {
-    func generateData() -> [User] {
+    func generateData() {
         
         let torburg: User = {
             let user = User(context: viewContext)
@@ -24,50 +24,48 @@ extension DataManager {
             user.posts = nil
             return user
         }()
-        let awesomeComment: Comment = {
-            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "AWESOME"; comment.date = Date(); comment.likes = 0
-            return comment
-        }()
-        let notBadComment: Comment = {
-            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "not bad"; comment.date = Date(); comment.likes = 0
-            return comment
-        }()
-        let putinComment: Comment = {
-            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "PUTIN!!11!!"; comment.date = Date(); comment.likes = 1000
-            return comment
-        }()
-        var torburgComments: [Comment] = {
-            return [awesomeComment, notBadComment, putinComment]
-        }()
         
-        torburgComments.sort { $0.likes > $1.likes }
         let kandinskiyPost: Post = {
             let post = Post(context: viewContext); post.author = torburg; post.photo = UIImage(named: "color_study"); post.content = "Kandinskiy"; post.date = Date(); post.likes = 5;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
         let vanGogPost: Post = {
             let post = Post(context: viewContext); post.author = torburg; post.photo = UIImage(named: "starry_night"); post.content = "Van Gog"; post.date = Date(); post.likes = 2;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
         let tomatooPost: Post = {
             let post = Post(context: viewContext); post.author = torburg; post.photo = UIImage(named: "tomato_soup"); post.content = "TOMAAATOOO"; post.date = Date(); post.likes = 10;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
         let picassoPost: Post = {
             let post = Post(context: viewContext); post.author = torburg; post.photo = UIImage(named: "picasso"); post.content = "pcs"; post.date = Date(); post.likes = 0;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
-        torburgComments.sort { $0.likes < $1.likes }
         let daliPost: Post = {
             let post = Post(context: viewContext); post.author = torburg; post.photo = UIImage(named: "dali"); post.content = "licking time"; post.date = Date(); post.likes = 10000;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
         
+        let awesomeComment: Comment = {
+            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "AWESOME"; comment.date = Date(); comment.likes = 0; comment.post = kandinskiyPost
+            return comment
+        }()
+        let notBadComment: Comment = {
+            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "not bad"; comment.date = Date(); comment.likes = 0; comment.post = vanGogPost
+            return comment
+        }()
+        let putinComment: Comment = {
+            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "PUTIN!!11!!"; comment.date = Date(); comment.likes = 1000; comment.post = daliPost
+            return comment
+        }()
+        
+        var torburgComments: [Comment] = {
+            return [awesomeComment, notBadComment, putinComment]
+        }()
+
+        torburgComments.sort { $0.likes > $1.likes }
+        kandinskiyPost.addToComments(NSSet(array: torburgComments))
+
         torburg.addToPosts(kandinskiyPost)
         torburg.addToPosts(vanGogPost)
         torburg.addToPosts(tomatooPost)
@@ -86,48 +84,46 @@ extension DataManager {
            return user
         }()
         
-        let slAwesomeComment: Comment = {
-            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "AWESOME"; comment.date = Date(); comment.likes = 0
-            return comment
-        }()
-        let slffffComment: Comment = {
-            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "fffffff"; comment.date = Date(); comment.likes = 0
-            return comment
-        }()
-        let slLukashenkoComment: Comment = {
-            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "LUKASHENKO!!11!!"; comment.date = Date(); comment.likes = 1000
-            return comment
-        }()
-        let slComments: [Comment] = {
-            return [slAwesomeComment, slffffComment, slLukashenkoComment]
-        }()
-        
         let sl1Post: Post = {
             let post = Post(context: viewContext); post.author = sofya; post.photo = UIImage(named: "sl1"); post.content = "С одной стороны и тут норм, но надо ремонт сделать. А мне неочень хочется. Потому что и так уже тут много вложились в ремонт на кухне, дверь входную поставили, и так по мелочам..."; post.date = Date(); post.likes = 50;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
         let sl2Post: Post = {
             let post = Post(context: viewContext); post.author = sofya; post.photo = UIImage(named: "sl2"); post.content = "Про волосы, кстати, я имела в виду цвет"; post.date = Date(); post.likes = 0;
-            post.comments?.addingObjects(from: slComments)
             return post
         }()
         let sl3Post: Post = {
             let post = Post(context: viewContext); post.author = sofya; post.photo = UIImage(named: "sl3"); post.content = "Потому что ботокс колят, он всю мимику нахрен убивает"; post.date = Date(); post.likes = 1;
-            post.comments?.addingObjects(from: torburgComments)
             return post
         }()
         let sl4Post: Post = {
             let post = Post(context: viewContext); post.author = sofya; post.photo = UIImage(named: "sl4"); post.content = "Сон снился"; post.date = Date(); post.likes = 50;
-            post.comments?.addingObjects(from: slComments)
             return post
         }()
+        
+        let slAwesomeComment: Comment = {
+            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "AWESOME"; comment.date = Date(); comment.likes = 0; comment.post = sl1Post
+            return comment
+        }()
+        let slffffComment: Comment = {
+            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "fffffff"; comment.date = Date(); comment.likes = 0; comment.post = sl2Post
+            return comment
+        }()
+        let slLukashenkoComment: Comment = {
+            let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "LUKASHENKO!!11!!"; comment.date = Date(); comment.likes = 1000; comment.post = sl3Post
+            return comment
+        }()
+//        let slComments: [Comment] = {
+//            return [slAwesomeComment, slffffComment, slLukashenkoComment]
+//        }()
         
         sofya.addToPosts(sl1Post)
         sofya.addToPosts(sl2Post)
         sofya.addToPosts(sl3Post)
         sofya.addToPosts(sl4Post)
         
-        return [torburg, sofya]
+        saveContext()
+        
+//        return [torburg, sofya]
     }
 }

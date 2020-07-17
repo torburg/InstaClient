@@ -70,7 +70,7 @@ extension PostsListViewController: UITableViewDelegate, UITableViewDataSource {
         if isFiltering {
             return filteredPosts.count
         } else {
-            return DataManager.shared.postCount(for: user)
+            return DataManager.shared.postCount(for: user) ?? 0
         }
     }
     
@@ -84,7 +84,7 @@ extension PostsListViewController: UITableViewDelegate, UITableViewDataSource {
             postViewModel.post = filteredPosts[indexPath.row]
             cell.fillCell(with: postViewModel)
         } else {
-            cell.onBind(for: indexPath.row)            
+            cell.onBind(for: indexPath)            
         }
         return cell
     }

@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 class ProfileViewControllerrViewController: UIViewController {
     
+    // MARK: - Properties
     var user: User? = nil
+//    var userFetchReslutController: NSFetchedResultsController<User>!
+//    var postFetchReslutController: NSFetchedResultsController<Post>!
 
     @IBOutlet weak var numberOfPosts: UILabel!
     @IBOutlet weak var numberOfFollowers: UILabel!
@@ -24,6 +28,8 @@ class ProfileViewControllerrViewController: UIViewController {
     private let maxItemsInLine = 3
     lazy private var dataManager = DataManager.shared
     
+    
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,9 +61,8 @@ class ProfileViewControllerrViewController: UIViewController {
     func getData() {
 //        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
         let name = "sofya"
-        dataManager.asyncGetUser(by: name) { user in
+        guard let user = dataManager.syncGetUser(by: name) else { return }
             self.user = user
-            
             navigationItem.title = user.name
             let postCount = user.posts?.count ?? 0
             self.numberOfPosts.text = String(postCount)
@@ -69,7 +74,6 @@ class ProfileViewControllerrViewController: UIViewController {
             guard let avatarImage = user.avatar else { return }
             self.avatar.image = avatarImage
             self.avatar.contentMode = .scaleAspectFill
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,14 +89,14 @@ class ProfileViewControllerrViewController: UIViewController {
 extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let currentUser = user else { return 0 }
-        return dataManager.postCount(for: currentUser)
+        return dataManager.postCount(for: currentUser) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let dequedCell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryViewCell.reuseID, for: indexPath)
         guard let cell = dequedCell as? GalleryViewCell else { return dequedCell}
         cell.user = user
-        cell.onBind(for: indexPath.row)
+        cell.onBind(for: indexPath)
         return cell
     }
     
@@ -100,7 +104,7 @@ extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICo
         guard let currentUser = user else { return }
         guard let postsListVC = storyboard?.instantiateViewController(identifier: "postListView") else { return }
         guard let vc = postsListVC as? PostsListViewController else { return }
-        vc.currentPost = dataManager.syncGetPost(of: currentUser, for: indexPath.row)
+        vc.currentPost = dataManager.syncGetPost(of: currentUser, for: indexPath)
         navigationController?.pushViewController(vc, animated: false)
         // FIXME: - Do I need this?..
 //            self.performSegue(withIdentifier: "showPost", sender: nil)

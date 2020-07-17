@@ -15,7 +15,7 @@ class GalleryViewCell: UICollectionViewCell {
     let dataManager = DataManager.shared
     var imageView = UIImageView()
     
-    func onBind(for index: Int) {
+    func onBind(for indexPath: IndexPath) {
         contentView.addSubview(imageView)
         let indicator = UIActivityIndicatorView(style: .medium)
         contentView.addSubview(indicator)
@@ -23,7 +23,7 @@ class GalleryViewCell: UICollectionViewCell {
         indicator.startAnimating()
         
         guard let currentUser = user else { return }
-        dataManager.asyncGetPost(of: currentUser, for: index) { (post) in
+        dataManager.asyncGetPost(of: currentUser, for: indexPath) { (post) in
             indicator.stopAnimating()
             indicator.removeFromSuperview()
             guard let image = post.photo else { return }

@@ -27,11 +27,11 @@ class PostViewModel {
         return " \(post?.likes ?? 0) likes"
     }
     var contentText: String {
-        return post?.description ?? ""
+        return post?.content ?? ""
     }
 
-    func getData(for user: User, by index: Int, completion: @escaping (PostViewModel)->Void) {
-        DataManager.shared.asyncGetPost(of: user, for: index) { (post) in
+    func getData(for user: User, by indexPath: IndexPath, completion: @escaping (PostViewModel)->Void) {
+        DataManager.shared.asyncGetPost(of: user, for: indexPath) { (post) in
             self.post = post
             completion(self)
         }

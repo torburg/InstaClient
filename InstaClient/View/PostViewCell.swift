@@ -61,11 +61,11 @@ class PostViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func onBind(for index: Int) {
+    func onBind(for indexPath: IndexPath) {
         // MARK: - Filling cell with empty PostViewModel
         fillCell(with: PostViewModel())
         guard let currentUser = user else { return }
-        postViewModel.getData(for: currentUser, by: index, completion: { [weak self] (post) in
+        postViewModel.getData(for: currentUser, by: indexPath, completion: { [weak self] (post) in
             guard let self = self else { return }
             // MARK: - Check do we get the model in the same cell, we need to do thsis cause async
             if self.postViewModel == post {

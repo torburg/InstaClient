@@ -10,15 +10,15 @@ import Foundation
 import CoreData
 
 protocol DataManagerProtocol {
-    func getAllUsers() -> [User]
+    func getAllUsers() -> [User]?
     
     func syncGetUser(by name: String) -> User?
     
     func asyncGetUser(by name: String, completion: (User)->Void)
     
-    func syncGetPost(of user: User, for index: Int) -> Post?
+    func syncGetPost(of user: User, for indexPath: IndexPath) -> Post?
     
-    func asyncGetPost(of user: User, for index: Int, completion: @escaping (Post)->Void)
+    func asyncGetPost(of user: User, for indexPath: IndexPath, completion: @escaping (Post)->Void)
     
     func getIndex(of post: Post, of user: User) -> Int?
     
@@ -38,67 +38,131 @@ class DataManager: DataManagerProtocol {
         static let likedPosts = "likedPosts"
     }
     
+//    private var mainUser: User = {
+//        let fetchRequest: NSFetchRequest = User.fetchRequest()
+//        let name = "sofya"
+//        let predicate = NSPredicate(format: "name == #@", name)
+//        fetchRequest.predicate = predicate
+//        var users: [User] = []
+//        do {
+//            users = try fetchRequest.execute()
+//        } catch let error {
+//            print(error)
+//        }
+//        return users.first!
+//    }()
+    
     static let shared = DataManager()
+    
+    lazy var userFetchResultController: NSFetchedResultsController<User> = {
+        let fetchRequest: NSFetchRequest = User.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: #keyPath(User.name), ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchResultsController
+    }()
+    
+    lazy var postsFetchResultController: NSFetchedResultsController<Post> = {
+        let fetchRequest: NSFetchRequest = Post.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: #keyPath(Post.date), ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchResultsController
+    }()
     
     let savingQueue = DispatchQueue(label: "net.torburg.saving", qos: .default)
     let fetchingQueue = DispatchQueue(label: "net.torburg.fetching", qos: .default)
     let fetchQueue = DispatchQueue(label: "net.torburg.fetch", qos: .default, attributes: .concurrent, autoreleaseFrequency: .never, target: nil)
     
-    private var users: [User] = []
+//    private var users: [User] = []
     
     
     // TODO: - Add liked Posts
-    private var likedPosts: [Post]? = nil
+//    private var likedPosts: [Post]? = nil
     
     private var userDefaults = UserDefaults.standard
     
     init() {
-        load()
-        if users.isEmpty {
-            users = self.generateData()
+        load { (result) in
+            switch result {
+            case .failure:
+                self.generateData()
+            case .success:
+                print("Success")
+            }
         }
     }
 
-    func getAllUsers() -> [User] {
-        return users
+    func getAllUsers() -> [User]? {
+        return userFetchResultController.fetchedObjects
     }
     
+// `   func getMainUser() -> User {
+//        return mainUser
+//    }`
+    
     func syncGetUser(by name: String) -> User? {
-        return users.filter{ $0.name == name}.first
+        let predicate = NSPredicate(format: "name == %@", name)
+        userFetchResultController.fetchRequest.predicate = predicate
+        do {
+            try userFetchResultController.performFetch()
+        } catch let error {
+            print(error)
+        }
+        return userFetchResultController.fetchedObjects?.first
     }
 
     private func getAllPosts(of user: User) -> [Post]? {
-//        return syncGetUser(by: user.name)?.posts
-        return nil
+        let predicate = NSPredicate(format: "author == %@", user)
+        postsFetchResultController.fetchRequest.predicate = predicate
+        do {
+            try postsFetchResultController.performFetch()
+        } catch let error {
+            print(error)
+        }
+        return postsFetchResultController.fetchedObjects
     }
     
-    func syncGetPost(of user: User, for index: Int) -> Post? {
-        guard let posts = getAllPosts(of: user) else { return nil }
-        let post = posts[index]
+    func syncGetPost(of user: User, for indexPath: IndexPath) -> Post? {
+        let predicate = NSPredicate(format: "author == %@", user)
+        postsFetchResultController.fetchRequest.predicate = predicate
+        do {
+            try postsFetchResultController.performFetch()
+        } catch let error {
+            print(error)
+        }
+        let post = postsFetchResultController.object(at: indexPath)
         return post
     }
     
-    func asyncGetPost(of user: User, for index: Int, completion: @escaping (Post)->Void) {
-        
-        // FIXME: - CoreData Fetching
-//        fetchingQueue.asyncAfter(deadline: .now()) { [weak self] in
-//            guard let manager = self else { return }
-//            guard let posts = manager.users.filter({ $0 == user }).first?.posts else { return }
-//            let post = posts.dropFirst(index)
-//            DispatchQueue.main.async {
-//                completion(post)
-//            }
-//        }
+    func asyncGetPost(of user: User, for indexPath: IndexPath, completion: @escaping (Post)->Void) {
+        let predicate = NSPredicate(format: "author == %@", user)
+        postsFetchResultController.fetchRequest.predicate = predicate
+        do {
+            try postsFetchResultController.performFetch()
+        } catch let error {
+            print(error)
+        }
+        let post = postsFetchResultController.object(at: indexPath)
+        completion(post)
     }
     
     func asyncGetUser(by name: String, completion: (User)->Void) {
-        // FIXME: - CoreData Fetching
-        guard let user = users.first(where: { $0.name == name } ) else { return }
+        let predicate = NSPredicate(format: "name == %@", name)
+        userFetchResultController.fetchRequest.predicate = predicate
+        guard let user = userFetchResultController.fetchedObjects?.first else { return }
         completion(user)
     }
     
-    func postCount(for user: User) -> Int {
-        return users.filter({ $0 == user }).first?.posts?.count ?? 0
+    func postCount(for user: User) -> Int? {
+        let predicate = NSPredicate(format: "author == %@", user)
+        postsFetchResultController.fetchRequest.predicate = predicate
+        do {
+            try postsFetchResultController.performFetch()
+        } catch let error {
+            print(error)
+        }
+        return postsFetchResultController.fetchedObjects?.count
     }
     
     func getIndex(of post: Post, of user: User) -> Int? {
@@ -139,12 +203,13 @@ class DataManager: DataManagerProtocol {
         }
     }
     
-    func load() {
-        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+    func load(completion: @escaping (FetchResult)->()) {
         do {
-            users = try viewContext.fetch(fetchRequest)
+            try userFetchResultController.performFetch()
+            completion(.success)
         } catch let error {
             print(error)
+            completion(.failure)
         }
     }
     
@@ -178,3 +243,10 @@ enum Response {
     case success
     case error
 }
+
+enum FetchResult {
+    case success
+    case failure
+}
+
+
