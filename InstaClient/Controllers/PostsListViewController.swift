@@ -22,9 +22,6 @@ class PostsListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataManager.shared.asyncGetUser(by: "sofya") { user in
-            self.currentUser = user
-        }
 
         searchBar.delegate = self
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resignResponders))
@@ -33,6 +30,7 @@ class PostsListViewController: UIViewController {
         setNavigationView()
         
         guard let post = currentPost else { return }
+        currentUser = DataManager.shared.syncGetUser(by: "sofya")
         guard let user = currentUser else { return }
         guard let index = DataManager.shared.getIndex(of: post, of: user) else { return }
         // MARK: - It doesn't work w/o asyncAfter. Miliseconds aren't nessesary.

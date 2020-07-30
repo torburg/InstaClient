@@ -36,7 +36,7 @@ class PostViewCell: UITableViewCell {
             guard let postToDelete = self?.postViewModel.post else { return }
             guard let currentUser = DataManager.shared.syncGetUser(by: (self?.postViewModel.authorName)!) else { return }
             guard let index = DataManager.shared.getIndex(of: postToDelete, of: currentUser) else { return }
-            DataManager.shared.asyncDeletePost(of: currentUser, by: index) { (response) in
+            DataManager.shared.asyncDelete(postToDelete) { (response) in
                 switch response {
                 case .success:
                     delegate.deletePost(at: index, by: action)

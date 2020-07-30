@@ -14,7 +14,7 @@ protocol DataManagerProtocol {
     
     func syncGetUser(by name: String) -> User?
     
-    func asyncGetUser(by name: String, completion: (User)->Void)
+    func asyncGetUser(by name: String, completion: @escaping (User)->Void)
     
     func syncGetPost(of user: User, for indexPath: IndexPath) -> Post?
     
@@ -22,7 +22,7 @@ protocol DataManagerProtocol {
     
     func getIndex(of post: Post, of user: User) -> Int?
     
-    func asyncDeletePost(of user: User, by index: Int, completion: @escaping (Response)->Void)
+    func asyncDelete(_ object: NSManagedObject, completion: @escaping (Response)->Void)
     
 //    func getAllLikedPosts() -> [String : [Post]]?
     
@@ -136,22 +136,31 @@ class DataManager: DataManagerProtocol {
     }
     
     func asyncGetPost(of user: User, for indexPath: IndexPath, completion: @escaping (Post)->Void) {
-        let predicate = NSPredicate(format: "author == %@", user)
-        postsFetchResultController.fetchRequest.predicate = predicate
-        do {
-            try postsFetchResultController.performFetch()
-        } catch let error {
-            print(error)
+        fetchingQueue.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            let predicate = NSPredicate(format: "author == %@", user)
+            self.postsFetchResultController.fetchRequest.predicate = predicate
+            do {
+                try self.postsFetchResultController.performFetch()
+            } catch let error {
+                print(error)
+            }
+            let post = self.postsFetchResultController.object(at: indexPath)
+            DispatchQueue.main.async {
+                completion(post)
+            }
         }
-        let post = postsFetchResultController.object(at: indexPath)
-        completion(post)
     }
     
-    func asyncGetUser(by name: String, completion: (User)->Void) {
-        let predicate = NSPredicate(format: "name == %@", name)
-        userFetchResultController.fetchRequest.predicate = predicate
-        guard let user = userFetchResultController.fetchedObjects?.first else { return }
-        completion(user)
+    func asyncGetUser(by name: String, completion: @escaping (User)->Void) {
+        fetchingQueue.asyncAfter(deadline: .now() + 1) {
+            let predicate = NSPredicate(format: "name == %@", name)
+            self.userFetchResultController.fetchRequest.predicate = predicate
+            guard let user = self.userFetchResultController.fetchedObjects?.first else { return }
+            DispatchQueue.main.async {
+                completion(user)
+            }
+        }
     }
     
     func postCount(for user: User) -> Int? {
@@ -170,21 +179,15 @@ class DataManager: DataManagerProtocol {
         return posts.firstIndex(where: { $0 == post })
     }
     
-    // FIXME: - CoreData Fetching
-    func asyncDeletePost(of user: User, by index: Int, completion: @escaping (Response)->Void) {
-//        savingQueue.async { [weak self] in
-//            guard let manager = self else { completion(Response.error); return }
-//            guard let posts = manager.getAllPosts(of: user) else { completion(Response.error); return }
-//            let postToDelete = posts[index]
-//            let postsWithoutDeleted = user.posts?.filter{ $0 != postToDelete }
-//            let replacingUser = User(id: user.id, avatar: user.avatar, name: user.name, email: user.email, password: user.password, followers: user.followers, following: user.following, posts: postsWithoutDeleted)
-//            manager.users.removeAll(where: { $0 == user })
-//            manager.users.append(replacingUser)
-//            manager.save()
-//        }
-//        DispatchQueue.main.async {
-//            completion(Response.success)
-//        }
+    func asyncDelete(_ object: NSManagedObject, completion: @escaping (Response)->Void) {
+        savingQueue.async { [weak self] in
+            guard let self = self else { completion(Response.error); return }
+            self.viewContext.delete(object)
+            self.saveContext()
+            DispatchQueue.main.async {
+                completion(Response.success)
+            }
+        }
     }
     
     // FIXME: - CoreData Fetching
@@ -196,11 +199,7 @@ class DataManager: DataManagerProtocol {
     
     func save() {
         // MARK: - Don't forget save liked post??
-        do {
-            try viewContext.save()
-        } catch let error {
-            print("Unable to save viewContext: \(error)")
-        }
+        saveContext()
     }
     
     func load(completion: @escaping (FetchResult)->()) {
