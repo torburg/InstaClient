@@ -9,10 +9,11 @@
 import UIKit
 import CoreData
 
-class ProfileViewControllerrViewController: UIViewController {
+class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     var user: User? = nil
+    private var router: ProfileRouter?
 //    var userFetchReslutController: NSFetchedResultsController<User>!
 //    var postFetchReslutController: NSFetchedResultsController<Post>!
 
@@ -33,6 +34,8 @@ class ProfileViewControllerrViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let router = ProfileRouter(rootViewController: self)
+        self.router = router
         setupView()
         getData()
     }
@@ -86,7 +89,7 @@ class ProfileViewControllerrViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
-extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let currentUser = user else { return 0 }
         return dataManager.postCount(for: currentUser) ?? 0
@@ -101,19 +104,16 @@ extension ProfileViewControllerrViewController: UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let router = self.router else { return }
         guard let currentUser = user else { return }
-        guard let postsListVC = storyboard?.instantiateViewController(identifier: "postListView") else { return }
-        guard let vc = postsListVC as? PostsListViewController else { return }
-        vc.currentPost = dataManager.syncGetPost(of: currentUser, for: indexPath)
-        navigationController?.pushViewController(vc, animated: false)
-        // FIXME: - Do I need this?..
-//            self.performSegue(withIdentifier: "showPost", sender: nil)
+        guard let post = dataManager.syncGetPost(of: currentUser, for: indexPath) else { return }
+        router.goToPostsList(to: post)
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension ProfileViewControllerrViewController: UICollectionViewDelegateFlowLayout {
+extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let fullWidth = collectionView.bounds.width
         let availableWidth = fullWidth - CGFloat(maxItemsInLine - 1) * minimumSpacing

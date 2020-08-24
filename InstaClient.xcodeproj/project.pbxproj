@@ -19,6 +19,7 @@
 		8849CC0A2493ADA500511B45 /* Post+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8849CC042493ADA500511B45 /* Post+CoreDataClass.swift */; };
 		8849CC0B2493ADA500511B45 /* Post+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8849CC052493ADA500511B45 /* Post+CoreDataProperties.swift */; };
 		8849CC0D24963B3500511B45 /* DataManagerGeneratorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8849CC0C24963B3500511B45 /* DataManagerGeneratorExtension.swift */; };
+		8850523224F421CB006722E0 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8850523124F421CB006722E0 /* ProfileRouter.swift */; };
 		8860193B246D549000054B73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193A246D549000054B73 /* AppDelegate.swift */; };
 		8860193D246D549000054B73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193C246D549000054B73 /* SceneDelegate.swift */; };
 		88601942246D549000054B73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601940246D549000054B73 /* Main.storyboard */; };
@@ -26,7 +27,7 @@
 		88601947246D549800054B73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88601946246D549800054B73 /* Assets.xcassets */; };
 		8860194A246D549800054B73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88601948246D549800054B73 /* LaunchScreen.storyboard */; };
 		88601952246D575800054B73 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88601951246D575800054B73 /* Roboto-Medium.ttf */; };
-		88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */; };
+		88601955246D58D400054B73 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601954246D58D400054B73 /* ProfileViewController.swift */; };
 		88601957246DFC6200054B73 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601956246DFC6200054B73 /* Extensions.swift */; };
 		88601961246EB46F00054B73 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601960246EB46F00054B73 /* AuthViewController.swift */; };
 		88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601963246EFF2A00054B73 /* FieldValidator.swift */; };
@@ -46,6 +47,7 @@
 		8849CC042493ADA500511B45 /* Post+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8849CC052493ADA500511B45 /* Post+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8849CC0C24963B3500511B45 /* DataManagerGeneratorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerGeneratorExtension.swift; sourceTree = "<group>"; };
+		8850523124F421CB006722E0 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		88601937246D549000054B73 /* InstaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8860193A246D549000054B73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8860193C246D549000054B73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,7 +57,7 @@
 		88601949246D549800054B73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8860194B246D549800054B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88601951246D575800054B73 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
-		88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerrViewController.swift; sourceTree = "<group>"; };
+		88601954246D58D400054B73 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		88601956246DFC6200054B73 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		88601960246EB46F00054B73 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		88601963246EFF2A00054B73 /* FieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldValidator.swift; sourceTree = "<group>"; };
@@ -91,6 +93,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		8850523024F42032006722E0 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				8850523124F421CB006722E0 /* ProfileRouter.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
 		8860192E246D549000054B73 = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +126,7 @@
 				882206B32493A4E300281DFA /* ImageTransformer.swift */,
 				88601967246F3BE500054B73 /* DataManager.swift */,
 				8849CC0C24963B3500511B45 /* DataManagerGeneratorExtension.swift */,
+				8850523024F42032006722E0 /* Routers */,
 				8816461F24740BBD0021508D /* View */,
 				88601965246EFF3800054B73 /* Auth */,
 				88601962246EB48800054B73 /* Controllers */,
@@ -162,7 +173,7 @@
 		88601962246EB48800054B73 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				88601954246D58D400054B73 /* ProfileViewControllerrViewController.swift */,
+				88601954246D58D400054B73 /* ProfileViewController.swift */,
 				8816461B24740A0C0021508D /* PostsListViewController.swift */,
 			);
 			path = Controllers;
@@ -257,8 +268,9 @@
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
 				882206B42493A4E300281DFA /* ImageTransformer.swift in Sources */,
 				8849CC062493ADA500511B45 /* User+CoreDataClass.swift in Sources */,
-				88601955246D58D400054B73 /* ProfileViewControllerrViewController.swift in Sources */,
+				88601955246D58D400054B73 /* ProfileViewController.swift in Sources */,
 				8849CC072493ADA500511B45 /* User+CoreDataProperties.swift in Sources */,
+				8850523224F421CB006722E0 /* ProfileRouter.swift in Sources */,
 				881933982479BC7600102133 /* PostViewModel.swift in Sources */,
 				88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */,
 				8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */,
