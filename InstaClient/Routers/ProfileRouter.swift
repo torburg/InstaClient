@@ -29,9 +29,8 @@ final class ProfileRouter {
     }
     
     func goToPostsList(to currentPost: Post) {
-        guard let postsListVC = rootViewController.storyboard?.instantiateViewController(identifier: "postListView") else { return }
-        guard let vc = postsListVC as? PostsListViewController else { return }
-        vc.currentPost = currentPost
-        rootViewController.navigationController?.pushViewController(vc, animated: false)
+        let postsListVC = PostsListViewController()
+        postsListVC.currentPost = currentPost
+        rootViewController.navigationController?.pushViewController(postsListVC, animated: false)
     }
 }

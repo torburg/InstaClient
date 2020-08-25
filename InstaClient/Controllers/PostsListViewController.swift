@@ -10,8 +10,8 @@ import UIKit
 
 class PostsListViewController: UIViewController {
 
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var postsList: UITableView!
+    var searchBar: UISearchBar!
+    var postsList: UITableView!
     var currentUser: User? = nil
     var currentPost: Post? = nil
     
@@ -23,11 +23,12 @@ class PostsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        searchBar.delegate = self
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resignResponders))
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
         setNavigationView()
+        setPostsList()
+        setSearchBar()
         
         guard let post = currentPost else { return }
         currentUser = DataManager.shared.syncGetUser(by: "sofya")
@@ -55,6 +56,44 @@ class PostsListViewController: UIViewController {
         
         navigationItem.titleView = stackView
     }
+    
+    func setPostsList() {
+        postsList = UITableView()
+        
+        let frame = CGRect(x: 0, y: 0, width: postsList.frame.width, height: 50)
+        postsList.tableHeaderView = UIView(frame: frame)
+        
+        postsList.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(postsList)
+        let constraints = [
+            postsList.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            postsList.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postsList.topAnchor.constraint(equalTo: view.topAnchor),
+            postsList.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        
+        postsList.register(UINib(nibName: String(describing: PostViewCell.self), bundle: nil), forCellReuseIdentifier: PostViewCell.reuseID)
+        postsList.dataSource = self
+        postsList.delegate = self
+    }
+    
+    func setSearchBar() {
+        searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        guard let tableHeader = postsList.tableHeaderView else { return }
+        tableHeader.addSubview(searchBar)
+
+        let constraints = [
+            searchBar.leadingAnchor.constraint(equalTo: tableHeader.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: tableHeader.trailingAnchor),
+            searchBar.topAnchor.constraint(equalTo: tableHeader.topAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        
+        searchBar.delegate = self
+    }
+    
     @objc
     func resignResponders() {
         searchBar.resignFirstResponder()
