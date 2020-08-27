@@ -7,15 +7,11 @@
 //
 
 import UIKit
-import CoreData
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, ProfileViewProtocol {
     
     // MARK: - Properties
-    var user: User? = nil
-    private var router: ProfileRouter?
-//    var userFetchReslutController: NSFetchedResultsController<User>!
-//    var postFetchReslutController: NSFetchedResultsController<Post>!
+    var presenter: ProfileWithCollectionViewPresenter!
 
     var avatar: UIImageView!
     var numberOfPosts: UILabel!
@@ -31,17 +27,12 @@ class ProfileViewController: UIViewController {
     
     private let minimumSpacing: CGFloat = 3.0
     private let maxItemsInLine = 3
-    lazy private var dataManager = DataManager.shared
-    
     
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let router = ProfileRouter(rootViewController: self)
-        self.router = router
         setupView()
-        getData()
+        presenter.getData()
     }
 
     func setupView() {
@@ -72,7 +63,6 @@ class ProfileViewController: UIViewController {
     }
     
     fileprivate func configureNavigationBar() {
-        dump(navigationController)
         navigationController?.navigationBar.backgroundColor = view.backgroundColor
         
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -97,7 +87,6 @@ class ProfileViewController: UIViewController {
         let posts: UIStackView = {
             let view = UIStackView()
             numberOfPosts = UILabel()
-            numberOfPosts.text = "30"
             numberOfPosts.font = UIFont(name: "Roboto-Medium", size: 17)
             view.addArrangedSubview(numberOfPosts)
             
@@ -112,7 +101,6 @@ class ProfileViewController: UIViewController {
         let followers: UIStackView = {
             let view = UIStackView()
             numberOfFollowers = UILabel()
-            numberOfFollowers.text = "0"
             numberOfFollowers.font = UIFont(name: "Roboto-Medium", size: 17)
             view.addArrangedSubview(numberOfFollowers)
             
@@ -128,7 +116,6 @@ class ProfileViewController: UIViewController {
             let view = UIStackView()
             numberOfFollowing = UILabel()
             numberOfFollowing.font = UIFont(name: "Roboto-Medium", size: 17)
-            numberOfFollowing.text = "150"
             view.addArrangedSubview(numberOfFollowing)
             
             let following = UILabel()
@@ -207,7 +194,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(gallery)
         
         gallery.delegate = self
-        gallery.dataSource = self
+        gallery.dataSource = presenter
         gallery.register(GalleryViewCell.self, forCellWithReuseIdentifier: GalleryViewCell.reuseID)
     }
     
@@ -259,52 +246,35 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    fileprivate func getData() {
-//        guard let name = UserDefaults.standard.value(forKey: "UserName") as? String else { return }
-        let name = "sofya"
-        guard let user = dataManager.syncGetUser(by: name) else { return }
-            self.user = user
-            navigationItem.title = user.name
-            let postCount = user.posts?.count ?? 0
-            self.numberOfPosts.text = String(postCount)
-            let followers = user.followers
-            self.numberOfFollowers.text = String(followers)
-            let following = user.following
-            self.numberOfFollowing.text = String(following)
+    
+    // FIXME: - Replace buisness logic from it
+    func setData(with user: User) {
+        navigationItem.title = user.name
+        let postCount = user.posts?.count ?? 0
+        self.numberOfPosts.text = String(postCount)
+        let followers = user.followers
+        self.numberOfFollowers.text = String(followers)
+        let following = user.following
+        self.numberOfFollowing.text = String(following)
 
-            guard let avatarImage = user.avatar else { return }
-            self.avatar.image = avatarImage
+        guard let avatarImage = user.avatar else { return }
+        self.avatar.image = avatarImage
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // FIXME: - When cell is only one it's located in the center of line
         super.viewWillAppear(animated)
-        getData()
+        // FIXME: - Updating posts count after delete
+        presenter.getData()
         gallery.reloadData()
     }
 }
 
-// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let currentUser = user else { return 0 }
-        return dataManager.postCount(for: currentUser) ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let dequedCell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryViewCell.reuseID, for: indexPath)
-        guard let cell = dequedCell as? GalleryViewCell else { return dequedCell}
-        cell.user = user
-        cell.onBind(for: indexPath)
-        return cell
-    }
-    
+extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let router = self.router else { return }
-        guard let currentUser = user else { return }
-        guard let post = dataManager.syncGetPost(of: currentUser, for: indexPath) else { return }
-        router.goToPostsList(to: post)
+        presenter.goToPostsList(to: indexPath)
     }
 }
 

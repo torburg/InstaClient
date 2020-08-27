@@ -14,7 +14,7 @@ class PostViewCell: UITableViewCell {
     
     var postViewModel = PostViewModel()
     var user: User?
-    var actionDelegate: UIViewController? = nil
+    weak var delegate: PostsListViewProtocol? = nil
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var mainAvatar: UIImageView!
@@ -31,24 +31,18 @@ class PostViewCell: UITableViewCell {
 
     @IBAction func editButtonPressed(_ sender: Any) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        guard let delegate = actionDelegate as? PostsListViewController else { return }
+        guard let actionDelegate = delegate as? PostsListViewController else { return }
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] action in
-            guard let postToDelete = self?.postViewModel.post else { return }
-            guard let currentUser = DataManager.shared.syncGetUser(by: (self?.postViewModel.authorName)!) else { return }
-            guard let index = DataManager.shared.getIndex(of: postToDelete, of: currentUser) else { return }
-            DataManager.shared.asyncDelete(postToDelete) { (response) in
-                switch response {
-                case .success:
-                    delegate.deletePost(at: index, by: action)
-                case .error:
-                    print("Cannot delete post in \(#function)")
+            self?.postViewModel.delete { (response, index) in
+                if response == Response.success {
+                    actionDelegate.deletePost(at: index)
                 }
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(deleteAction)
         alert.addAction(cancelAction)
-        delegate.present(alert, animated: true, completion: nil)
+        actionDelegate.present(alert, animated: true, completion: nil)
     }
 
     override func awakeFromNib() {
@@ -76,7 +70,9 @@ class PostViewCell: UITableViewCell {
 
     func fillCell(with postViewModel: PostViewModel) {
         self.postViewModel = postViewModel
-        
+        guard let dataDelegate = delegate as? PostsListViewController,
+            let postsListPresenter = dataDelegate.presenter as? PostsListPresenter else { return }
+        postViewModel.dataManager = postsListPresenter.dataManager
         if let avatarImage = postViewModel.post?.author.avatar {
             mainAvatar.image = resized(avatarImage, to: mainAvatar.frame.size)
         } else {

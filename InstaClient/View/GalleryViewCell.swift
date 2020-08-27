@@ -12,7 +12,7 @@ import UIKit
 class GalleryViewCell: UICollectionViewCell {
     static var reuseID = "reuseID"
     var user: User?
-    let dataManager = DataManager.shared
+    var dataManager: DataManagerProtocol?
     var imageView = UIImageView()
     
     func onBind(for indexPath: IndexPath) {
@@ -23,7 +23,8 @@ class GalleryViewCell: UICollectionViewCell {
         indicator.startAnimating()
         
         guard let currentUser = user else { return }
-        dataManager.asyncGetPost(of: currentUser, for: indexPath) { (post) in
+        guard dataManager != nil else { return }
+        dataManager!.asyncGetPost(of: currentUser, for: indexPath) { (post) in
             indicator.stopAnimating()
             indicator.removeFromSuperview()
             guard let image = post.photo else { return }

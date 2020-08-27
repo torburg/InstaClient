@@ -8,14 +8,13 @@
 
 import UIKit
 
-class PostsListViewController: UIViewController {
+class PostsListViewController: UIViewController, PostsListViewProtocol {
 
+    var presenter: PostListWithTableViewAndSearchBarPresenter!
+    
     var searchBar: UISearchBar!
     var postsList: UITableView!
-    var currentUser: User? = nil
-    var currentPost: Post? = nil
     
-    lazy var filteredPosts = [Post]()
     var isFiltering: Bool {
         return (searchBar.text != nil && !searchBar.text!.isEmpty)
     }
@@ -30,20 +29,17 @@ class PostsListViewController: UIViewController {
         setPostsList()
         setSearchBar()
         
-        guard let post = currentPost else { return }
-        currentUser = DataManager.shared.syncGetUser(by: "sofya")
-        guard let user = currentUser else { return }
-        guard let index = DataManager.shared.getIndex(of: post, of: user) else { return }
-        // MARK: - It doesn't work w/o asyncAfter. Miliseconds aren't nessesary.
-        // FIXME: - Should open current post w/o downloading every post in table
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
-            self.postsList.scrollToRow(at: IndexPath(item: index, section: 0), at: .top, animated: true)
-        }
+        presenter.setData()
+        presenter.scrollToPost()
+    }
+    
+    func scrollToPost(at indexPath: IndexPath, at position: UITableView.ScrollPosition, isAnimated: Bool) {
+        postsList.scrollToRow(at: indexPath, at: position, animated: isAnimated)
     }
     
     func setNavigationView() {
         let name = UILabel()
-        name.text = currentUser?.name.uppercased()
+        name.text = presenter.currentUserName
         name.textColor = .gray
         let title = UILabel()
         title.text = "Posts"
@@ -74,7 +70,7 @@ class PostsListViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
         
         postsList.register(UINib(nibName: String(describing: PostViewCell.self), bundle: nil), forCellReuseIdentifier: PostViewCell.reuseID)
-        postsList.dataSource = self
+        postsList.dataSource = presenter
         postsList.delegate = self
     }
     
@@ -91,7 +87,7 @@ class PostsListViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
         
-        searchBar.delegate = self
+        searchBar.delegate = presenter
     }
     
     @objc
@@ -99,56 +95,21 @@ class PostsListViewController: UIViewController {
         searchBar.resignFirstResponder()
     }
     
+    func reloadPostslist() {
+        postsList.reloadData()
+    }
+    
 }
 
-extension PostsListViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let user = currentUser else { return 0 }
-        if isFiltering {
-            return filteredPosts.count
-        } else {
-            return DataManager.shared.postCount(for: user) ?? 0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dequedCell = postsList.dequeueReusableCell(withIdentifier: PostViewCell.reuseID, for: indexPath)
-        guard let cell = dequedCell as? PostViewCell else { return dequedCell }
-        cell.actionDelegate = self
-        cell.user = currentUser
-        if isFiltering {
-            let postViewModel = PostViewModel()
-            postViewModel.post = filteredPosts[indexPath.row]
-            cell.fillCell(with: postViewModel)
-        } else {
-            cell.onBind(for: indexPath)            
-        }
-        return cell
-    }
-    
+extension PostsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 640
     }
 }
 
 extension PostsListViewController {
-    func deletePost(at index: Int, by action: UIAlertAction) {
+    func deletePost(at index: Int) {
         postsList.deleteRows(at: [IndexPath(item: index, section: 0)], with: .left)
         postsList.reloadData()
-    }
-}
-
-extension PostsListViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let user = currentUser else { return }
-        DataManager.shared.filterPosts(of: user, contains: searchText) { [weak self] (posts) in
-            guard let self = self else { return }
-            self.filteredPosts = posts
-            self.postsList.reloadData()
-        }
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
     }
 }

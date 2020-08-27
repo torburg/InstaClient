@@ -9,6 +9,9 @@
 import Foundation
 
 class PostViewModel {
+    
+    var dataManager: DataManager?
+    
     var post: Post?
     
     var postIndex: Int?
@@ -31,9 +34,25 @@ class PostViewModel {
     }
 
     func getData(for user: User, by indexPath: IndexPath, completion: @escaping (PostViewModel)->Void) {
-        DataManager.shared.asyncGetPost(of: user, for: indexPath) { (post) in
+        guard dataManager != nil else { return }
+        dataManager!.asyncGetPost(of: user, for: indexPath) { (post) in
             self.post = post
             completion(self)
+        }
+    }
+    
+    func delete(completion: @escaping (Response, Int)->Void) {
+        guard let manager = dataManager else { return }
+        guard let postToDelete = post else { return }
+        guard let currentUser = manager.syncGetUser(by: (authorName)) else { return }
+        guard let index = manager.getIndex(of: postToDelete, of: currentUser) else { return }
+        manager.asyncDelete(postToDelete) { (response) in
+            switch response {
+            case .success:
+                completion(response, index)
+            case .error:
+                print("Cannot delete post in \(#function)")
+            }
         }
     }
 

@@ -24,6 +24,8 @@ protocol DataManagerProtocol {
     
     func asyncDelete(_ object: NSManagedObject, completion: @escaping (Response)->Void)
     
+    func postCount(for user: User) -> Int?
+    
 //    func getAllLikedPosts() -> [String : [Post]]?
     
 //    func getLikedPosts(of user: User) -> [Post]?
@@ -51,8 +53,6 @@ class DataManager: DataManagerProtocol {
 //        }
 //        return users.first!
 //    }()
-    
-    static let shared = DataManager()
     
     lazy var userFetchResultController: NSFetchedResultsController<User> = {
         let fetchRequest: NSFetchRequest = User.fetchRequest()

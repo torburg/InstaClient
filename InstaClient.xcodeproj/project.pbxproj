@@ -32,6 +32,9 @@
 		88601961246EB46F00054B73 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601960246EB46F00054B73 /* AuthViewController.swift */; };
 		88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601963246EFF2A00054B73 /* FieldValidator.swift */; };
 		88601968246F3BE500054B73 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88601967246F3BE500054B73 /* DataManager.swift */; };
+		889141B324F7DA7200A1D0B5 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889141B224F7DA7200A1D0B5 /* ProfilePresenter.swift */; };
+		889141B624F844AB00A1D0B5 /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889141B524F844AB00A1D0B5 /* ModuleBuilder.swift */; };
+		889141B824F8548F00A1D0B5 /* PostsListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889141B724F8548F00A1D0B5 /* PostsListPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,9 @@
 		88601960246EB46F00054B73 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		88601963246EFF2A00054B73 /* FieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldValidator.swift; sourceTree = "<group>"; };
 		88601967246F3BE500054B73 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		889141B224F7DA7200A1D0B5 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		889141B524F844AB00A1D0B5 /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
+		889141B724F8548F00A1D0B5 /* PostsListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsListPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,10 +131,12 @@
 				8860193C246D549000054B73 /* SceneDelegate.swift */,
 				882206B32493A4E300281DFA /* ImageTransformer.swift */,
 				88601967246F3BE500054B73 /* DataManager.swift */,
+				889141B524F844AB00A1D0B5 /* ModuleBuilder.swift */,
 				8849CC0C24963B3500511B45 /* DataManagerGeneratorExtension.swift */,
 				8850523024F42032006722E0 /* Routers */,
 				8816461F24740BBD0021508D /* View */,
 				88601965246EFF3800054B73 /* Auth */,
+				889141B424F7E41700A1D0B5 /* Presenters */,
 				88601962246EB48800054B73 /* Controllers */,
 				882206B22491472D00281DFA /* ViewModel */,
 				88601959246EA6E500054B73 /* Model */,
@@ -186,6 +194,15 @@
 				88601960246EB46F00054B73 /* AuthViewController.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		889141B424F7E41700A1D0B5 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				889141B224F7DA7200A1D0B5 /* ProfilePresenter.swift */,
+				889141B724F8548F00A1D0B5 /* PostsListPresenter.swift */,
+			);
+			path = Presenters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				889141B324F7DA7200A1D0B5 /* ProfilePresenter.swift in Sources */,
 				8816462124740D0A0021508D /* PostViewCell.swift in Sources */,
 				8849CC092493ADA500511B45 /* Comment+CoreDataProperties.swift in Sources */,
 				88601957246DFC6200054B73 /* Extensions.swift in Sources */,
@@ -267,12 +285,14 @@
 				8803B965247D76B700B07D06 /* GalleryViewCell.swift in Sources */,
 				88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */,
 				882206B42493A4E300281DFA /* ImageTransformer.swift in Sources */,
+				889141B824F8548F00A1D0B5 /* PostsListPresenter.swift in Sources */,
 				8849CC062493ADA500511B45 /* User+CoreDataClass.swift in Sources */,
 				88601955246D58D400054B73 /* ProfileViewController.swift in Sources */,
 				8849CC072493ADA500511B45 /* User+CoreDataProperties.swift in Sources */,
 				8850523224F421CB006722E0 /* ProfileRouter.swift in Sources */,
 				881933982479BC7600102133 /* PostViewModel.swift in Sources */,
 				88601964246EFF2B00054B73 /* FieldValidator.swift in Sources */,
+				889141B624F844AB00A1D0B5 /* ModuleBuilder.swift in Sources */,
 				8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */,
 				8849CC0A2493ADA500511B45 /* Post+CoreDataClass.swift in Sources */,
 				8849CC0B2493ADA500511B45 /* Post+CoreDataProperties.swift in Sources */,
