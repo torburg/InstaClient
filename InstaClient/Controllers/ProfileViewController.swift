@@ -54,11 +54,11 @@ class ProfileViewController: UIViewController, ProfileViewProtocol {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // FIXME: - Problem with image resizing
         // By default, the corner radius does not apply to the image in the layer’s contents property;
         // it applies only to the background color and border of the layer.
         // Only in this method avatar has bounds to calculate corner radius.
-        avatar.layer.masksToBounds = true
+        avatar.contentMode = .scaleAspectFill
+        avatar.clipsToBounds = true
         avatar.layer.cornerRadius = avatar.bounds.width / 2
     }
     
