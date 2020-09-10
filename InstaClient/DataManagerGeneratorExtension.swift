@@ -101,15 +101,15 @@ extension DataManager {
             return post
         }()
         
-        let slAwesomeComment: Comment = {
+        let _: Comment = {
             let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "AWESOME"; comment.date = Date(); comment.likes = 0; comment.post = sl1Post
             return comment
         }()
-        let slffffComment: Comment = {
+        let _: Comment = {
             let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "fffffff"; comment.date = Date(); comment.likes = 0; comment.post = sl2Post
             return comment
         }()
-        let slLukashenkoComment: Comment = {
+        let _: Comment = {
             let comment = Comment(context: viewContext); comment.author = torburg; comment.text = "LUKASHENKO!!11!!"; comment.date = Date(); comment.likes = 1000; comment.post = sl3Post
             return comment
         }()
