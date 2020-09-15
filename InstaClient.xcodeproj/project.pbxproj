@@ -21,6 +21,8 @@
 		8849CC0D24963B3500511B45 /* DataManagerGeneratorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8849CC0C24963B3500511B45 /* DataManagerGeneratorExtension.swift */; };
 		8850523224F421CB006722E0 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8850523124F421CB006722E0 /* ProfileRouter.swift */; };
 		8850523624F587E4006722E0 /* PostViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8850523524F587E4006722E0 /* PostViewCell.xib */; };
+		8859BB1E2510DBB400F6CC87 /* RootNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8859BB1D2510DBB400F6CC87 /* RootNavigationViewController.swift */; };
+		8859BB202510E99300F6CC87 /* TabBarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8859BB1F2510E99300F6CC87 /* TabBarRouter.swift */; };
 		8860193B246D549000054B73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193A246D549000054B73 /* AppDelegate.swift */; };
 		8860193D246D549000054B73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8860193C246D549000054B73 /* SceneDelegate.swift */; };
 		88601945246D549000054B73 /* InstaClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 88601943246D549000054B73 /* InstaClient.xcdatamodeld */; };
@@ -52,6 +54,8 @@
 		8849CC0C24963B3500511B45 /* DataManagerGeneratorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerGeneratorExtension.swift; sourceTree = "<group>"; };
 		8850523124F421CB006722E0 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		8850523524F587E4006722E0 /* PostViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostViewCell.xib; sourceTree = "<group>"; };
+		8859BB1D2510DBB400F6CC87 /* RootNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationViewController.swift; sourceTree = "<group>"; };
+		8859BB1F2510E99300F6CC87 /* TabBarRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarRouter.swift; sourceTree = "<group>"; };
 		88601937246D549000054B73 /* InstaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8860193A246D549000054B73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8860193C246D549000054B73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				8850523124F421CB006722E0 /* ProfileRouter.swift */,
+				8859BB1F2510E99300F6CC87 /* TabBarRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 		88601962246EB48800054B73 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8859BB1D2510DBB400F6CC87 /* RootNavigationViewController.swift */,
 				88601954246D58D400054B73 /* ProfileViewController.swift */,
 				8816461B24740A0C0021508D /* PostsListViewController.swift */,
 			);
@@ -295,7 +301,9 @@
 				889141B624F844AB00A1D0B5 /* ModuleBuilder.swift in Sources */,
 				8816461C24740A0C0021508D /* PostsListViewController.swift in Sources */,
 				8849CC0A2493ADA500511B45 /* Post+CoreDataClass.swift in Sources */,
+				8859BB202510E99300F6CC87 /* TabBarRouter.swift in Sources */,
 				8849CC0B2493ADA500511B45 /* Post+CoreDataProperties.swift in Sources */,
+				8859BB1E2510DBB400F6CC87 /* RootNavigationViewController.swift in Sources */,
 				88601968246F3BE500054B73 /* DataManager.swift in Sources */,
 				8849CC082493ADA500511B45 /* Comment+CoreDataClass.swift in Sources */,
 				88601961246EB46F00054B73 /* AuthViewController.swift in Sources */,

@@ -34,4 +34,10 @@ class ModuleBuilder: ModuleBuilderProtocol {
         postListViewController.presenter = postsListPresenter
         return postListViewController
     }
+    
+    static func createNavigationController(_ rootViewController: UIViewController) -> UINavigationController {
+        let tabBarRouter = TabBarRouter()
+        let navigationController = RootNavigationViewController(rootViewController: rootViewController, router: tabBarRouter)
+        return navigationController
+    }
 }
