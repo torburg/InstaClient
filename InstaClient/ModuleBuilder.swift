@@ -36,7 +36,7 @@ class ModuleBuilder: ModuleBuilderProtocol {
     }
     
     static func createNavigationController(_ rootViewController: UIViewController) -> UINavigationController {
-        let tabBarRouter = TabBarRouter()
+        let tabBarRouter = TabBarRouter(currentViewController: rootViewController)
         let navigationController = RootNavigationViewController(rootViewController: rootViewController, router: tabBarRouter)
         return navigationController
     }

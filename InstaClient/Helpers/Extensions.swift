@@ -22,3 +22,15 @@ func resized(_ image: UIImage, to size: CGSize) -> UIImage {
     return resizedImage
 }
 
+
+extension UIImage {
+    convenience public init?(chosen: Bool, named: String) {
+        var newName = named
+        if chosen {
+            newName += "Chosen"
+        } else {
+            newName += "Unchosen"
+        }
+        self.init(named: newName)
+    }
+}

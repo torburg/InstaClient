@@ -55,9 +55,15 @@ class RootNavigationViewController: UINavigationController {
         tabBarView.addArrangedSubview(likes)
 
         let profile = UIButton()
-        let profileImage = UIImage(named: "ProfileUnchosen")
-        let profileTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileTapped))
-        profile.addGestureRecognizer(profileTapRecognizer)
+        var isProfileViewController = false
+        if let _ = router.currentViewController as? ProfileViewProtocol {
+            isProfileViewController = true
+        }
+        let profileImage = UIImage(chosen: isProfileViewController, named: "Profile")
+        if !isProfileViewController {
+            let profileTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileTapped))
+            profile.addGestureRecognizer(profileTapRecognizer)
+        }
         profile.setImage(profileImage, for: .normal)
         tabBarView.addArrangedSubview(profile)
         
@@ -75,13 +81,9 @@ class RootNavigationViewController: UINavigationController {
               
     }
     
-    override init(rootViewController: UIViewController) {
-        super.init(rootViewController: rootViewController)
-    }
-    
-    convenience init(rootViewController: UIViewController, router: TabBarRouterProtocol) {
-        self.init(rootViewController: rootViewController)
+    init(rootViewController: UIViewController, router: TabBarRouterProtocol) {
         self.router = router
+        super.init(rootViewController: rootViewController)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -7,8 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
 protocol TabBarRouterProtocol {
+    var currentViewController: UIViewController? { get set }
+    init(currentViewController: UIViewController)
     func goToHomeScreen()
     func goToSearchScreen()
     func goToAddPostScreen()
@@ -16,7 +19,14 @@ protocol TabBarRouterProtocol {
     func goToProfileScreen()
 }
 
-class TabBarRouter: TabBarRouterProtocol {
+final class TabBarRouter: TabBarRouterProtocol {
+    
+    weak var currentViewController: UIViewController?
+    
+    init(currentViewController: UIViewController) {
+        self.currentViewController = currentViewController
+    }
+    
     func goToAddPostScreen() {
         print(#function)
     }
