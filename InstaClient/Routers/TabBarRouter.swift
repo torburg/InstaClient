@@ -22,6 +22,7 @@ protocol TabBarRouterProtocol {
 final class TabBarRouter: TabBarRouterProtocol {
     
     weak var currentViewController: UIViewController?
+    weak var navigationViewController: UINavigationController?
     
     init(currentViewController: UIViewController) {
         self.currentViewController = currentViewController
@@ -37,6 +38,10 @@ final class TabBarRouter: TabBarRouterProtocol {
     
     func goToProfileScreen() {
         print(#function)
+        let profileViewController = ModuleBuilder.createProfileViewController(root: nil)
+        navigationViewController?.viewControllers.removeAll()
+        navigationViewController?.pushViewController(profileViewController, animated: true)
+        currentViewController = profileViewController
     }
     
     func goToHomeScreen() {
@@ -45,5 +50,10 @@ final class TabBarRouter: TabBarRouterProtocol {
     
     func goToSearchScreen() {
         print(#function)
+        currentViewController = nil
+        let searchViewController = ModuleBuilder.createSearchViewController()
+        navigationViewController?.viewControllers.removeAll()
+        navigationViewController?.pushViewController(searchViewController, animated: true)
+        currentViewController = searchViewController
     }
 }

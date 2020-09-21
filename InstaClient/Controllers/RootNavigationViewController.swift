@@ -19,53 +19,82 @@ class RootNavigationViewController: UINavigationController {
         
         return tabBarView
     }()
+    
+    var homeButton: UIButton?
+    var searchButton: UIButton?
+    var addPostButton: UIButton?
+    var likeButton: UIButton?
+    var profileButton: UIButton?
+    
+    private func createButton(named imageName: String) -> UIButton {
+        let button = UIButton()
+        let image = UIImage(chosen: false, named: imageName)
+        let imageSelected = UIImage(chosen: true, named: imageName)
+        button.setImage(image, for: .disabled)
+        button.setImage(imageSelected, for: .selected)
+        return button
+    }
+    
+    func setState() {
+        for view in tabBarView.arrangedSubviews {
+            if let button = view as? UIButton {
+                button.isEnabled = true
+                button.isSelected = false
+                let currentViewController = router.currentViewController
+                if let _ = currentViewController as? SearchViewController {
+                    searchButton?.isEnabled = false
+//                    searchButton?.isEnabled = false
+                    searchButton?.removeTarget(self, action: #selector(searchTapped), for: .touchUpInside)
+                    break
+                } else if let _ = currentViewController as? ProfileViewController {
+                    profileButton?.isEnabled = false
+//                    profileButton?.removeTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+                    break
+                }
+            }
+        }
+    }
+    
+    func removeGestureRecognizers(from uibutton: UIButton?) {
+        guard let button = uibutton, let gestureRecognizers = button.gestureRecognizers else { return }
+        for gestureRecognizer in gestureRecognizers {
+            button.removeGestureRecognizer(gestureRecognizer)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabBar()
+        setState()
     }
     
     func configureTabBar() {
-        let home = UIButton()
-        let homeImage = UIImage(named: "homeUnchosen")
-        home.setImage(homeImage, for: .normal)
-        let homeTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(homeTapped))
-        home.addGestureRecognizer(homeTapRecognizer)
-        tabBarView.addArrangedSubview(home)
-
-        let search = UIButton()
-        let searchImage = UIImage(named: "SearchUnchosen")
-        let searchTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(searchTapped))
-        search.addGestureRecognizer(searchTapRecognizer)
-        search.setImage(searchImage, for: .normal)
-        tabBarView.addArrangedSubview(search)
+        homeButton = createButton(named: "Home")
+        guard homeButton != nil else { return }
         
-        let newPost = UIButton()
-        let newPostImage = UIImage(named: "AddUnchosen")
-        let newPostTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(newPostTapped))
-        newPost.addGestureRecognizer(newPostTapRecognizer)
-        newPost.setImage(newPostImage, for: .normal)
-        tabBarView.addArrangedSubview(newPost)
-
-        let likes = UIButton()
-        let likesImage = UIImage(named: "LikeUnchosen")
-        let likesTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(likesTapped))
-        likes.addGestureRecognizer(likesTapRecognizer)
-        likes.setImage(likesImage, for: .normal)
-        tabBarView.addArrangedSubview(likes)
-
-        let profile = UIButton()
-        var isProfileViewController = false
-        if let _ = router.currentViewController as? ProfileViewProtocol {
-            isProfileViewController = true
-        }
-        let profileImage = UIImage(chosen: isProfileViewController, named: "Profile")
-        if !isProfileViewController {
-            let profileTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileTapped))
-            profile.addGestureRecognizer(profileTapRecognizer)
-        }
-        profile.setImage(profileImage, for: .normal)
-        tabBarView.addArrangedSubview(profile)
+        tabBarView.addArrangedSubview(homeButton!)
+        
+        searchButton = createButton(named: "Search")
+        guard searchButton != nil else { return }
+//        let searchGestureRecognizer = UIGestureRecognizer(target: self, action: #selector(searchTapped))
+//        searchButton!.addGestureRecognizer(searchGestureRecognizer)
+        searchButton?.addTarget(self, action: #selector(searchTapped), for: .touchUpInside)
+        tabBarView.addArrangedSubview(searchButton!)
+        
+        addPostButton = createButton(named: "Add")
+        guard addPostButton != nil else { return }
+        tabBarView.addArrangedSubview(addPostButton!)
+        
+        likeButton = createButton(named: "Like")
+        guard likeButton != nil else { return }
+        tabBarView.addArrangedSubview(likeButton!)
+        
+        profileButton = createButton(named: "Profile")
+        guard profileButton != nil else { return }
+        profileButton!.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+//        let profileGestureRecognizer = UIGestureRecognizer(target: self, action: #selector(profileTapped))
+//        profileButton!.addGestureRecognizer(profileGestureRecognizer)
+        tabBarView.addArrangedSubview(profileButton!)
         
         tabBarView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tabBarView)
@@ -95,10 +124,12 @@ extension RootNavigationViewController {
     @objc
     func homeTapped() {
         router.goToHomeScreen()
+        setState()
     }
 
     @objc
     func searchTapped() {
+        print(#function)
         router.goToSearchScreen()
     }
     
@@ -114,6 +145,8 @@ extension RootNavigationViewController {
     
     @objc
     func profileTapped() {
+        print(#function)
         router.goToProfileScreen()
+        setState()
     }
 }

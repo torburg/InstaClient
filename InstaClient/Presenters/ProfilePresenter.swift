@@ -24,6 +24,8 @@ protocol ProfilePresenterProtocol: class {
 class ProfilePresenter: NSObject, ProfileWithCollectionViewPresenter {
     let view: ProfileViewProtocol
     let dataManager: DataManagerProtocol
+    
+    // FIXME: - Change to Protocol
     let router: ProfileRouter
     
     var user: User? = nil

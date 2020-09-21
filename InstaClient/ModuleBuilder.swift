@@ -38,6 +38,15 @@ class ModuleBuilder: ModuleBuilderProtocol {
     static func createNavigationController(_ rootViewController: UIViewController) -> UINavigationController {
         let tabBarRouter = TabBarRouter(currentViewController: rootViewController)
         let navigationController = RootNavigationViewController(rootViewController: rootViewController, router: tabBarRouter)
+        tabBarRouter.navigationViewController = navigationController
         return navigationController
+    }
+    
+    static func createSearchViewController() -> SearchViewController {
+        let searchViewController = SearchViewController()
+        let searchViewRouter = SearchViewRouter()
+        let searchViewPresenter = SearchPresenter(view: searchViewController, dataManager: dataManager, router: searchViewRouter)
+        searchViewController.presenter = searchViewPresenter
+        return searchViewController
     }
 }

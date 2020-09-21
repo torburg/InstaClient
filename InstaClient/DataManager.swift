@@ -26,6 +26,10 @@ protocol DataManagerProtocol {
     
     func postCount(for user: User) -> Int?
     
+    func getAllPosts() -> [Post]?
+    
+    func getPost(by indexPath: IndexPath) -> Post
+    
 //    func getAllLikedPosts() -> [String : [Post]]?
     
 //    func getLikedPosts(of user: User) -> [Post]?
@@ -78,6 +82,7 @@ class DataManager: DataManagerProtocol {
     
     
     // TODO: - Add liked Posts
+    // TODO: - Need to add like button with NSLock() to all liked posts, to prevent race condition
 //    private var likedPosts: [Post]? = nil
     
     private var userDefaults = UserDefaults.standard
@@ -95,6 +100,22 @@ class DataManager: DataManagerProtocol {
 
     func getAllUsers() -> [User]? {
         return userFetchResultController.fetchedObjects
+    }
+    
+    func getAllPosts() -> [Post]? {
+        // FIXME: - Don't like to change Predicate
+        postsFetchResultController.fetchRequest.predicate = NSPredicate(value: true)
+        do {
+            try postsFetchResultController.performFetch()
+        } catch let error {
+            print(error)
+        }
+        return postsFetchResultController.fetchedObjects
+    }
+    
+    func getPost(by indexPath: IndexPath) -> Post {
+        let post = postsFetchResultController.object(at: indexPath)
+        return post
     }
     
 // `   func getMainUser() -> User {
